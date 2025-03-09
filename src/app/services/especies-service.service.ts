@@ -22,21 +22,17 @@ export class EspeciesServiceService {
   }
 
   // Crear un ingredientes
-  crearUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, usuario);
+  crearEspecie(especie: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, especie);
   }
 
   // Actualizar un ingredientes
-  actualizarUsuario(id: number, usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, usuario);
+  actualizarEspecie(id: number, especie: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, especie);
   }
 
   // Eliminar un ingredientes
-  eliminarUsuario(id: number): Observable<any> {
+  eliminarEspecie(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
-
-
-
-
 }

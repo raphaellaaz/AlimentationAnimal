@@ -21,13 +21,13 @@ export class IngredientesServiceService {
   }
 
   // Crear un ingredientes
-  createIngrediente(usuario: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, usuario);
+  createIngrediente(ingrediente: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, ingrediente);
   }
 
   // Actualizar un ingredientes
-  updateIngrediente(id: number, usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, usuario);
+  updateIngrediente(id: number, ingrediente: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, ingrediente);
   }
 
   // Eliminar un ingredientes

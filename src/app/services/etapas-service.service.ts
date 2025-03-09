@@ -21,13 +21,13 @@ export class EtapasServiceService {
     }
   
     // Crear un etapas
-    crearEtapa(usuario: any): Observable<any> {
-      return this.http.post<any>(this.apiUrl, usuario);
+    crearEtapa(etapa: any): Observable<any> {
+      return this.http.post<any>(this.apiUrl, etapa);
     }
   
     // Actualizar un etapas
-    actualizarEtapa(id: number, usuario: any): Observable<any> {
-      return this.http.put<any>(`${this.apiUrl}/${id}`, usuario);
+    actualizarEtapa(id: number, etapa: any): Observable<any> {
+      return this.http.put<any>(`${this.apiUrl}/${id}`, etapa);
     }
   
     // Eliminar un etapa
