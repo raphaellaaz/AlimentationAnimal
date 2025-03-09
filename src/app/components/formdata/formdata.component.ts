@@ -1,0 +1,44 @@
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {AsyncPipe} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
+import { SearchInpComponent as SearchEspecie} from '../especies/search-inp/search-inp.component';
+import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-inp/search-inp.component';
+
+@Component({
+  selector: 'app-formdata',
+  standalone: true,
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+    MatChipsModule,
+    MatIconModule,
+    SearchEspecie,
+    SearchIngrediente
+],
+  templateUrl: './formdata.component.html',
+  styleUrl: './formdata.component.css'
+})
+export class FormdataComponent implements OnInit{
+  myControl = new FormControl('');
+  optionsIngrediente: string[] = []; // Ingredientes de API
+  optionsEspecies: string[] = [];
+  filteredOptions!: Observable<string[]>;
+  selectedIngredientes: string[] = []; // Lista de ingredientes seleccionados
+  selectedEspecies: string[] = [];
+
+  constructor() {}
+
+  ngOnInit() {}
+}

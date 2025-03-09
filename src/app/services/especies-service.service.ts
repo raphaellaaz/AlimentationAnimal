@@ -12,12 +12,12 @@ export class EspeciesServiceService {
   private apiUrl = 'http://127.0.0.1:3000/especies'; // URL de la API
 
    // Obtener todos los ingredientes
-   getUsuarios(): Observable<any[]> {
+   getAllEspecies(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 
   // Obtener un ingredientes por ID
-  getUsuario(id: number): Observable<any> {
+  getEspecie(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 

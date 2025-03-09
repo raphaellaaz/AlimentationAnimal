@@ -1,0 +1,42 @@
+<mat-form-field class="example-full-width">
+    <mat-label>Ingrediente</mat-label>
+    <input type="text"
+           placeholder="Buscar"
+           aria-label="Ingrediente"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+      @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{option}}</mat-option>
+      }
+    </mat-autocomplete>
+
+    <div class="selected-items">
+      @for (item of selectedIngredientes; track $index) {
+        <mat-chip [removable]="true" (removed)="removeItem(item)">
+          {{ item }}
+          <mat-icon matChipRemove>close</mat-icon>
+        </mat-chip>
+      }
+    </div>
+
+    <div>
+      <mat-selection-list #ingrediente>
+        @for (ingrediente of selectedIngredientes; track ingrediente) {
+          <mat-list-option >{{ingrediente}}</mat-list-option>
+          <input 
+          type="number"
+          placeholder="Precio/kg"
+          aria-label="Precio"
+          matInput>
+        }
+      
+      </mat-selection-list>
+    
+      <p>
+        Options selected: {{ingrediente.selectedOptions.selected.length}}
+      </p>
+    </div>
+  </mat-form-field>
+

@@ -1,0 +1,23 @@
+<mat-form-field class="example-full-width">
+    <mat-label>Especie</mat-label>
+    <input type="text"
+           placeholder="Buscar"
+           aria-label="Especie"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+      @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{option}}</mat-option>
+      }
+    </mat-autocomplete>
+    <div class="selected-items">
+  
+        @for (item of selectedEspecies; track $index) {
+          <mat-chip [removable]="true" (removed)="removeItem(item)">
+            {{ item }}
+            <mat-icon matChipRemove>close</mat-icon>
+          </mat-chip>
+        }
+    </div>
+  </mat-form-field>
