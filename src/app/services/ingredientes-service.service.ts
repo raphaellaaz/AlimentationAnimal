@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Ingrediente } from '../models/ingrediente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,27 +12,27 @@ export class IngredientesServiceService {
   constructor(private http: HttpClient) { }
 
   // Obtener todos los ingredientes
-  getAllIngredientes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getAllIngredientes(): Observable<Ingrediente[]> {
+    return this.http.get<Ingrediente[]>(this.apiUrl);
   }
 
-  // Obtener un ingredientes por ID
-  getIngrediente(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  // Obtener un ingrediente por ID
+  getIngrediente(id: number): Observable<Ingrediente> {
+    return this.http.get<Ingrediente>(`${this.apiUrl}/${id}`);
   }
 
-  // Crear un ingredientes
-  createIngrediente(ingrediente: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, ingrediente);
+  // Crear un ingrediente
+  createIngrediente(ingrediente: Ingrediente): Observable<Ingrediente> {
+    return this.http.post<Ingrediente>(this.apiUrl, ingrediente);
   }
 
-  // Actualizar un ingredientes
-  updateIngrediente(id: number, ingrediente: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, ingrediente);
+  // Actualizar un ingrediente
+  updateIngrediente(id: number, ingrediente: Ingrediente): Observable<Ingrediente> {
+    return this.http.put<Ingrediente>(`${this.apiUrl}/${id}`, ingrediente);
   }
 
-  // Eliminar un ingredientes
-  delIngrediente(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  // Eliminar un ingrediente
+  delIngrediente(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -9,7 +9,6 @@
     "test": "ng test",
     "electron": "ng build && electron electron/main.js",
     "electron:dev": "concurrently \"ng serve\" \"electron .\""
-
   },
   "private": true,
   "dependencies": {
@@ -30,22 +29,22 @@
     "zone.js": "~0.15.0"
   },
   "build": {
-  "appId": "com.miapp.electron",
-  "productName": "MiApp",
-  "directories": {
-    "output": "dist-electron"
+    "appId": "com.miapp.electron",
+    "productName": "MiApp",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/main.js"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   },
-  "files": [
-    "dist/**/*",
-    "electron/main.js"
-  ],
-  "win": {
-    "target": "nsis"
-  },
-  "linux": {
-    "target": "AppImage"
-  }
-},
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.7",
     "@angular/cli": "^19.1.7",

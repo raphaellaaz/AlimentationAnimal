@@ -1,38 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Especie } from '../models/especie.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EspeciesServiceService {
-
-  constructor(private http: HttpClient) { }
+export class EspeciesService {
 
   private apiUrl = 'http://127.0.0.1:3000/especies'; // URL de la API
 
-   // Obtener todos los ingredientes
-   getAllEspecies(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  constructor(private http: HttpClient) { }
+
+  // Obtener todas las especies
+  getAllEspecies(): Observable<Especie[]> {
+    return this.http.get<Especie[]>(this.apiUrl);
   }
 
-  // Obtener un ingredientes por ID
-  getEspecie(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  // Obtener una especie por ID
+  getEspecie(id: number): Observable<Especie> {
+    return this.http.get<Especie>(`${this.apiUrl}/${id}`);
   }
 
-  // Crear un ingredientes
-  crearEspecie(especie: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, especie);
+  // Crear una nueva especie
+  crearEspecie(especie: Especie): Observable<Especie> {
+    return this.http.post<Especie>(this.apiUrl, especie);
   }
 
-  // Actualizar un ingredientes
-  actualizarEspecie(id: number, especie: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, especie);
+  // Actualizar una especie
+  actualizarEspecie(id: number, especie: Especie): Observable<Especie> {
+    return this.http.put<Especie>(`${this.apiUrl}/${id}`, especie);
   }
 
-  // Eliminar un ingredientes
-  eliminarEspecie(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  // Eliminar una especie
+  eliminarEspecie(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
