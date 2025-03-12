@@ -1,13 +1,13 @@
-import { Especie } from './especie.model';
-import { Dieta } from './dieta.model';
+import { EspecieModel } from './especie.model';
+import { DietaModel } from './dieta.model';
 
-export interface EtapaDesarrollo {
+export interface EtapaModel {
     id_etapa: number;
     id_especie: number;
     nombre_etapa: string;
     edad_inicio: number;
     edad_fin: number;
     descripcion?: string;
-    dietas?: Dieta[];
-    especies: Especie;
+    dietas?: DietaModel[];
+    especies?: EspecieModel;
 }

@@ -1,4 +1,4 @@
-export interface Dieta {
+export interface DietaModel {
     id_dieta: number;
     id_etapa: number;
     porcentaje_proteina?: number;
