@@ -11,6 +11,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { SearchInpComponent as SearchEspecie} from '../especies/search-inp/search-inp.component';
 import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-inp/search-inp.component';
+import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-inp.component';
 
 @Component({
   selector: 'app-formdata',
@@ -21,23 +22,16 @@ import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe,
     MatChipsModule,
     MatIconModule,
     SearchEspecie,
-    SearchIngrediente
+    SearchIngrediente,
+    SearchEtapa,
 ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css'
 })
 export class FormdataComponent implements OnInit{
-  myControl = new FormControl('');
-  optionsIngrediente: string[] = []; // Ingredientes de API
-  optionsEspecies: string[] = [];
-  filteredOptions!: Observable<string[]>;
-  selectedIngredientes: string[] = []; // Lista de ingredientes seleccionados
-  selectedEspecies: string[] = [];
-
   constructor() {}
 
   ngOnInit() {}
