@@ -7,15 +7,14 @@
            [formControl]="myControl"
            [matAutocomplete]="auto">
            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-      @for (option of filteredOptions | async; track option) {
-        <mat-option [value]="option">{{option}}</mat-option>
+      @for (option of filteredOptions | async; track option.nombre) {
+        <mat-option [value]="option">{{option.nombre}}</mat-option>
       }
     </mat-autocomplete>
     <div class="selected-items">
-  
-        @for (item of selectedEspecies; track $index) {
-          <mat-chip [removable]="true" (removed)="removeItem(item)">
-            {{ item }}
+        @for (especie of selectedEspecies; track $index) {
+          <mat-chip [removable]="true" (removed)="removeItem(especie)">
+            {{ especie.nombre }}
             <mat-icon matChipRemove>close</mat-icon>
           </mat-chip>
         }

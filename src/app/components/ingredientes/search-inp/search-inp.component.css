@@ -1,0 +1,20 @@
+.field_ingrediente{
+    width: 100%;
+}
+.list_card {
+    height: 4vh;
+    display: flex;
+    align-items: center;   /* Alinea verticalmente los elementos */
+    gap: 10px;             /* Espacio entre los elementos */
+  }
+  
+  .list_ingrediente {
+    flex: 1;               /* Hace que ocupe el espacio disponible */
+  }
+  
+  .field_price {
+    flex: 0.40;               /* Hace que ocupe el espacio disponible */
+    padding-top: 20px;
+
+  }
+  

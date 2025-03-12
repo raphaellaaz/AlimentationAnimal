@@ -1,1 +1,23 @@
-<p>search-inp works!</p>
+<mat-form-field class="example-full-width">
+    <mat-label>Etapa</mat-label>
+    <input type="text"
+           placeholder="Buscar"
+           aria-label="Especie"
+           matInput
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+      @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{option.nombre_etapa}}</mat-option>
+      }
+    </mat-autocomplete>
+    <div class="selected-items">
+  
+        @for (etapa of selectedEtapas; track $index) {
+          <mat-chip [removable]="true" (removed)="removeItem(etapa)">
+            {{ etapa.nombre_etapa }}
+            <mat-icon matChipRemove>close</mat-icon>
+          </mat-chip>
+        }
+    </div>
+  </mat-form-field>
