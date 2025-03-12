@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Especie } from '../models/especie.model';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { EspecieModel as Especie } from '../models/especie.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EspeciesService {
 
+  private especieSeleccionada = new BehaviorSubject<number | null>(null);
+  especieSeleccionada$ = this.especieSeleccionada.asObservable();
   private apiUrl = 'http://127.0.0.1:3000/especies'; // URL de la API
 
   constructor(private http: HttpClient) { }
+ 
+
+  setEspecieSeleccionada(id: number) {
+    this.especieSeleccionada.next(id);
+  }
 
   // Obtener todas las especies
   getAllEspecies(): Observable<Especie[]> {
