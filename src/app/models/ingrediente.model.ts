@@ -1,104 +1,106 @@
-export interface Ingrediente {
-    id: number;
-    Nombre_Ingrediente?: string;
-    HUMEDAD?: number;
-    CENIZAS?: number;
-    PB?: number;
-    EE?: number;
-    EE_VERD?: number;
-    FB?: number;
-    FND?: number;
-    FAD?: number;
-    LAD?: number;
-    ALMIDON?: number;
-    AZUCARES?: number;
-    SUMA?: number;
-    C14_0?: number;
-    C16_0?: number;
-    C16_1?: number;
-    C18_0?: number;
-    C18_1?: number;
-    C18_2?: number;
-    C18_3?: number;
-    C_20?: number;
-    Ca?: number;
-    P?: number;
-    Pf_tico?: number;
-    Pdisp_AVES?: number;
-    Pdig_AVES?: number;
-    Pdig_PORC?: number;
-    Na?: number;
-    Cl?: number;
-    Mg?: number;
-    K?: number;
-    S?: number;
-    Cu_ppm?: number;
-    Fe_ppm?: number;
-    Mn_ppm?: number;
-    Zn_ppm?: number;
-    Vit_E_ppm?: number;
-    Biotina_ppm?: number;
-    Colina_ppm?: number;
-    EM_RTES_Kcal_kg?: number;
-    UFL_UF_kg?: number;
-    UFC_UF_kg?: number;
-    ENL_RTES_Kcal_kg?: number;
-    ENM_RTES_Kcal_kg?: number;
-    ENC_RTES_Kcal_kg?: number;
-    ALM_SOLUBLE?: number;
-    ALM_DEGRAD?: number;
-    ED_PORC_Kcal_kg?: number;
-    EM_PORC_Kcal_kg?: number;
-    EN_PORC_Kcal_kg?: number;
-    EN_CERDAS_Kcal_kg?: number;
-    EMA_POLLIT_Kcal_kg?: number;
-    EMA_AVES_Kcal_kg?: number;
-    ED_CONEJOS_Kcal_kg?: number;
-    ED_CABALLO_Kcal_kg?: number;
-    PBDIG_RUM?: number;
-    PBDIG_PORC?: number;
-    PBDIG_AVES?: number;
-    PBDIG_CON?: number;
-    PBDIG_CAB?: number;
-    PDIA?: number;
-    PDIE?: number;
-    PDIN?: number;
-    LYS_PDIE?: number;
-    MET_PDIE?: number;
-    LYS?: number;
-    MET?: number;
-    MC?: number;
-    THR?: number;
-    TRP?: number;
-    ILE?: number;
-    VAL?: number;
-    ARG?: number;
-    GLYeq?: number;
-    LYS_DIA?: number;
-    MET_DIA?: number;
-    MC_DIA?: number;
-    THR_DIA?: number;
-    TRP_DIA?: number;
-    ILE_DIA?: number;
-    VAL_DIA?: number;
-    ARG_DIA?: number;
-    GLYeq_DIA?: number;
-    LYS_DIS?: number;
-    MET_DIS?: number;
-    MC_DIS?: number;
-    THR_DIS?: number;
-    TRP_DIS?: number;
-    ILE_DIS?: number;
-    VAL_DIS?: number;
-    ARG_DIS?: number;
-    GLYeq_DIS?: number;
-    LYS_DR?: number;
-    MET_DR?: number;
-    MC_DR?: number;
-    THR_DR?: number;
-    TRP_DR?: number;
-    ILE_DR?: number;
-    VAL_DR?: number;
-    ARG_DR?: number;
-    GLYeq_DR?: number;
-}
+export interface IngredienteModel {
+
+    id: number; // "fedna_data_pkey    
+    Nombre_Ingrediente: string; // "Nombre Ingrediente"
+    HUMEDAD____?: number; // "HUMEDAD (%)"
+    CENIZAS____?: number; // "CENIZAS (%)"
+    PB____?: number; // "PB (%)"
+    EE____?: number; // "EE (%)"
+    EE_VERD____?: number; // "EE VERD. (%)"
+    FB____?: number; // "FB (%)"
+    FND____?: number; // "FND (%)"
+    FAD____?: number; // "FAD (%)"
+    LAD____?: number; // "LAD (%)"
+    ALMIDON____?: number; // "ALMIDON (%)"
+    AZUCARES____?: number; // "AZUCARES (%)"
+    SUMA____?: number; // "SUMA (%)"
+    C14_0____?: number; // "C14:0 (%)"
+    C16_0____?: number; // "C16:0 (%)"
+    C16_1____?: number; // "C16:1 (%)"
+    C18_0____?: number; // "C18:0 (%)"
+    C18_1____?: number; // "C18:1 (%)"
+    C18_2____?: number; // "C18:2 (%)"
+    C18_3____?: number; // "C18:3 (%)"
+    C_20____?: number; // "C>20 (%)"
+    Ca____?: number; // "Ca (%)"
+    P____?: number; // "P (%)"
+    Pf_tico____?: number; // "Pfítico (%)"
+    Pdisp_AVES____?: number; // "Pdisp.AVES (%)"
+    Pdig_AVES____?: number; // "Pdig.AVES (%)"
+    Pdig_PORC____?: number; // "Pdig.PORC (%)"
+    Na____?: number; // "Na (%)"
+    Cl____?: number; // "Cl (%)"
+    Mg____?: number; // "Mg (%)"
+    K____?: number; // "K (%)"
+    S____?: number; // "S (%)"
+    Cu_ppm?: number; // "Cu ppm"
+    Fe_ppm?: number; // "Fe ppm"
+    Mn_ppm?: number; // "Mn ppm"
+    Zn_ppm?: number; // "Zn ppm"
+    Vit__E_ppm?: number; // "Vit. E ppm"
+    Biotina_ppm?: number; // "Biotina ppm"
+    Colina_ppm?: number; // "Colina ppm"
+    EM_RTES_Kcal_kg?: number; // "EM_RTES Kcal/kg"
+    UFL_UF_kg?: number; // "UFL UF/kg"
+    UFC_UF_kg?: number; // "UFC UF/kg"
+    ENL_RTES_Kcal_kg?: number; // "ENL_RTES Kcal/kg"
+    ENM_RTES_Kcal_kg?: number; // "ENM_RTES Kcal/kg"
+    ENC_RTES_Kcal_kg?: number; // "ENC_RTES Kcal/kg"
+    ALM_SOLUBLE____?: number; // "ALM_SOLUBLE (%)"
+    ALM_DEGRAD_____?: number; // "ALM_DEGRAD. (%)"
+    ED_PORC_Kcal_kg?: number; // "ED_PORC Kcal/kg"
+    EM_PORC_Kcal_kg?: number; // "EM_PORC Kcal/kg"
+    EN_PORC_Kcal_kg?: number; // "EN_PORC Kcal/kg"
+    EN_CERDAS_Kcal_kg?: number; // "EN_CERDAS Kcal/kg"
+    EMA_POLLIT_Kcal_kg?: number; // "EMA_POLLIT Kcal/kg"
+    EMA_AVES_Kcal_kg?: number; // "EMA_AVES Kcal/kg"
+    ED_CONEJOS_Kcal_kg?: number; // "ED_CONEJOS Kcal/kg"
+    ED_CABALLO_Kcal_kg?: number; // "ED_CABALLO Kcal/kg"
+    PBDIG_RUM____?: number; // "PBDIG_RUM (%)"
+    PBDIG_PORC____?: number; // "PBDIG_PORC (%)"
+    PBDIG_AVES____?: number; // "PBDIG_AVES (%)"
+    PBDIG_CON____?: number; // "PBDIG_CON (%)"
+    PBDIG_CAB____?: number; // "PBDIG_CAB (%)"
+    PDIA____?: number; // "PDIA (%)"
+    PDIE____?: number; // "PDIE (%)"
+    PDIN____?: number; // "PDIN (%)"
+    LYS___PDIE_?: number; // "LYS (%PDIE)"
+    MET___PDIE_?: number; // "MET (%PDIE)"
+    LYS____?: number; // "LYS (%)"
+    MET____?: number; // "MET (%)"
+    M_C____?: number; // "M+C (%)"
+    THR____?: number; // "THR (%)"
+    TRP____?: number; // "TRP (%)"
+    ILE____?: number; // "ILE (%)"
+    VAL____?: number; // "VAL (%)"
+    ARG____?: number; // "ARG (%)"
+    GLYeq____?: number; // "GLYeq (%)"
+    LYS_DIA____?: number; // "LYS_DIA (%)"
+    MET_DIA____?: number; // "MET_DIA (%)"
+    M_C_DIA____?: number; // "M+C_DIA (%)"
+    THR_DIA____?: number; // "THR_DIA (%)"
+    TRP_DIA____?: number; // "TRP_DIA (%)"
+    ILE_DIA____?: number; // "ILE_DIA (%)"
+    VAL_DIA____?: number; // "VAL_DIA (%)"
+    ARG_DIA____?: number; // "ARG_DIA (%)"
+    GLYeq_DIA____?: number; // "GLYeq_DIA (%)"
+    LYS_DIS____?: number; // "LYS_DIS (%)"
+    MET_DIS____?: number; // "MET_DIS (%)"
+    M_C_DIS____?: number; // "M+C_DIS (%)"
+    THR_DIS____?: number; // "THR_DIS (%)"
+    TRP_DIS____?: number; // "TRP_DIS (%)"
+    ILE_DIS____?: number; // "ILE_DIS (%)"
+    VAL_DIS____?: number; // "VAL_DIS (%)"
+    ARG_DIS____?: number; // "ARG_DIS (%)"
+    GLYeq_DIS____?: number; // "GLYeq_DIS (%)"
+    LYS_DR____?: number; // "LYS_DR (%)"
+    MET_DR____?: number; // "MET_DR (%)"
+    M_C_DR____?: number; // "M+C_DR (%)"
+    THR_DR____?: number; // "THR_DR (%)"
+    TRP_DR____?: number; // "TRP_DR (%)"
+    ILE_DR____?: number; // "ILE_DR (%)"
+    VAL_DR____?: number; // "VAL_DR (%)"
+    ARG_DR____?: number; // "ARG_DR (%)"
+    GLYeq_DR____?: number; // "GLYeq_DR (%)"
+    
+    }
