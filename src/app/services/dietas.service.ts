@@ -1,35 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Dieta } from '../models/dieta.model'; // Importación correcta
+import { DietaModel } from '../models/dieta.model'; // Importación correcta
+import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DietasService {
 
-  private apiUrl = 'http://127.0.0.1:3000/dieta'; // URL de la API
+  private apiUrl = `${environment.API_URL}/dieta`; // URL de la API
 
   constructor(private http: HttpClient) { }
 
   // Obtener todas las dietas
-  getAllDietas(): Observable<Dieta[]> {
-    return this.http.get<Dieta[]>(this.apiUrl);
+  getAllDietas(): Observable<DietaModel[]> {
+    return this.http.get<DietaModel[]>(this.apiUrl);
   }
 
   // Obtener una dieta por ID
-  getDieta(id: number): Observable<Dieta> {
-    return this.http.get<Dieta>(`${this.apiUrl}/${id}`);
+  getDieta(id: number): Observable<DietaModel> {
+    return this.http.get<DietaModel>(`${this.apiUrl}/${id}`);
   }
 
   // Crear una nueva dieta
-  crearDieta(dieta: Dieta): Observable<Dieta> {
-    return this.http.post<Dieta>(this.apiUrl, dieta);
+  crearDieta(dieta: DietaModel): Observable<DietaModel> {
+    return this.http.post<DietaModel>(this.apiUrl, dieta);
   }
 
   // Actualizar una dieta existente
-  actualizarDieta(id: number, dieta: Dieta): Observable<Dieta> {
-    return this.http.put<Dieta>(`${this.apiUrl}/${id}`, dieta);
+  actualizarDieta(id: number, dieta: DietaModel): Observable<DietaModel> {
+    return this.http.put<DietaModel>(`${this.apiUrl}/${id}`, dieta);
   }
 
   // Eliminar una dieta por ID

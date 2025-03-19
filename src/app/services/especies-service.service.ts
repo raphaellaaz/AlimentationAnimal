@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EspecieModel as Especie } from '../models/especie.model';
+import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class EspeciesService {
 
   private especieSeleccionada = new BehaviorSubject<number | null>(null);
   especieSeleccionada$ = this.especieSeleccionada.asObservable();
-  private apiUrl = 'http://127.0.0.1:3000/especies'; // URL de la API
+  private apiUrl = `${environment.API_URL}especies`; // URL de la API
 
   constructor(private http: HttpClient) { }
  
