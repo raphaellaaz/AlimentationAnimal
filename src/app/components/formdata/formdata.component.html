@@ -5,17 +5,25 @@
   </div>
 </div>
 
-  <mat-form-field class="example-full-width">
-    <mat-label>Cantidad a Formular</mat-label>
-    <input matInput type="number" placeholder="kilogramos">
-  </mat-form-field>
+<!--<mat-form-field class="example-full-width">-->
+
+<form class="form-container">
+  <div class="formform">
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Cantidad a Formular</mat-label>
+      <input matInput type="number" placeholder="kilogramos">
+    </mat-form-field>
 
 
-  <div class="etapa_especie">
+    <div class="etapa_especie">
 
-    <app-searchespecie-inp class="especie"></app-searchespecie-inp>
+      <app-searchespecie-inp class="especie"></app-searchespecie-inp>
 
-    <app-searchetapa-inp class="etapa"></app-searchetapa-inp>
+      <app-searchetapa-inp class="etapa"></app-searchetapa-inp>
+      
+    </div>
+
+    <app-searchingrediente-inp></app-searchingrediente-inp>
 
     <div class="button-group">
       <button mat-raised-button color="primary">Formular</button>
@@ -23,15 +31,8 @@
     </div>
   </div>
 
-
-
-  <app-searchingrediente-inp></app-searchingrediente-inp>
-
-  <div class="buttons">
-    <button mat-raised-button color="primary">Formular</button>
-    <button mat-button>Limpiar</button>
   <div class="right-side-box">
     <h3>Información adicional</h3>
     <p>Este es un cuadro grande en la parte derecha. Puedes añadir más contenido aquí.</p>
   </div>
-
+</form>
