@@ -13,6 +13,10 @@ import { SearchInpComponent as SearchEspecie} from '../especies/search-inp/searc
 import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-inp/search-inp.component';
 import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-inp.component';
 import {MatButtonModule} from '@angular/material/button';
+
+
+
+import { SimplexOptimizer } from '../../formulation/formulation';
 @Component({
   selector: 'app-formdata',
   standalone: true,
@@ -33,13 +37,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './formdata.component.css'
 })
 export class FormdataComponent implements OnInit {
-
-  cantidad: number | null = null;
-  especie: any; // Ajusta el tipo según tu modelo de datos
-  etapa: any;   // Ajusta el tipo según tu modelo de datos
-  ingrediente: any; // Ajusta el tipo según tu modelo de datos
-
-  constructor() {}
-
-  ngOnInit() {}
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
 }

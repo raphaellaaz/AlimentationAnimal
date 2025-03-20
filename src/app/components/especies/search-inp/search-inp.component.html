@@ -1,22 +1,20 @@
 <mat-form-field class="example-full-width">
-    <mat-label>Especie</mat-label>
-    <input type="text"
-           placeholder="Buscar"
-           aria-label="Especie"
-           matInput
-           [formControl]="myControl"
-           [matAutocomplete]="auto">
-           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-      @for (option of filteredOptions | async; track option.nombre) {
-        <mat-option [value]="option">{{option.nombre}}</mat-option>
-      }
-    </mat-autocomplete>
-    <div class="selected-items">
-        @for (especie of selectedEspecies; track $index) {
-          <mat-chip [removable]="true" (removed)="removeItem(especie)">
-            {{ especie.nombre }}
-            <mat-icon matChipRemove>close</mat-icon>
-          </mat-chip>
-        }
-    </div>
-  </mat-form-field>
+  <mat-label>Especie</mat-label>
+  <input type="text" placeholder="Buscar" aria-label="Especie" matInput [formControl]="myControl"
+    [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+    @for (option of filteredOptions | async; track option.nombre) {
+    <mat-option [value]="option">{{option.nombre}}</mat-option>
+    }
+  </mat-autocomplete>
+  <div class="selected-items">
+    <!--@for (especie of selectedEspecies; track $index) { -->
+    @if (selectedEspecies) {
+    <mat-chip [removable]="true" (removed)="removeItem()">
+      {{ selectedEspecies.nombre }}
+      <mat-icon matChipRemove>close</mat-icon>
+    </mat-chip>
+    }
+
+  </div>
+</mat-form-field>

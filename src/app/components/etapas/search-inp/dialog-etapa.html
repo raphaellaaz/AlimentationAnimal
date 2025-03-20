@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Animal Etapas</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-selection-list #shoesList [formControl]="etapasControl" (selectionChange)="onOptionSelected($event)" [multiple]="false">
+      @for (etapa of optionsEtapas; track etapa.id_etapa) {
+        <mat-list-option [value]="etapa">
+          {{etapa.nombre_etapa}}
+        </mat-list-option>
+      }
+    </mat-selection-list>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button (click)="closeDialog()">Seleccionar</button>
+</mat-dialog-actions>

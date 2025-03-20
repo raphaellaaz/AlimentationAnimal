@@ -1,15 +1,28 @@
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
-import {Component, OnInit} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormsModule} from '@angular/forms';
+import {Component, OnInit, inject} from '@angular/core';
+import {FormControl, ReactiveFormsModule, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
+import {ChangeDetectionStrategy, signal} from '@angular/core';
+import {MatDividerModule} from '@angular/material/divider';
+
+
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 
 import { EtapasService } from '../../../services/etapas-service.service';
 import { EspeciesService } from '../../../services/especies-service.service';
@@ -17,6 +30,10 @@ import { EspeciesService } from '../../../services/especies-service.service';
 
 import { EtapaModel } from '../../../models/etapa-desarrollo.model';
 
+
+export interface DialogData {
+  animal: 'panda' | 'unicorn' | 'lion';
+}
 
 
 @Component({
@@ -27,19 +44,17 @@ import { EtapaModel } from '../../../models/etapa-desarrollo.model';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    AsyncPipe,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule, MatDividerModule, MatIconModule
   ],
   templateUrl: './search-inp.component.html',
   styleUrl: './search-inp.component.css'
 })
 export class SearchInpComponent implements OnInit {
 
-  myControl = new FormControl('');
   allEtapas: EtapaModel[] = []; //api data from endpoint
   optionsEtapas: EtapaModel[] = []; //Guardar datos de etapas filter by id especie
-  filteredOptions!: Observable<EtapaModel[]>;
   // Lista de seleccionados
   selectedEtapas: EtapaModel[] = [];
   especieId: number = 0;
@@ -47,12 +62,6 @@ export class SearchInpComponent implements OnInit {
   constructor( private apiEtapas: EtapasService, private especieService: EspeciesService  ){}
 
   ngOnInit(): void {
-    
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-    
 
     this.apiEtapas.getAllEtapas().subscribe(data => { 
       this.allEtapas = data.map((etapas: EtapaModel) => ({
@@ -65,8 +74,6 @@ export class SearchInpComponent implements OnInit {
       }));
       console.log(this.allEtapas);
     });
-
-
     
     this.especieService.especieSeleccionada$.subscribe(id => {
       if (id !== null) {
@@ -83,25 +90,77 @@ export class SearchInpComponent implements OnInit {
 
   }
 
+  dialog = inject(MatDialog);
 
-  private _filter(value: string): EtapaModel[] {
-    //const filterValue = value.toLowerCase();
-    const filterValue = typeof value === 'string'  ? value.toLowerCase() : '';
-    return this.optionsEtapas.filter(option => option.nombre_etapa.toLowerCase().includes(filterValue));
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogEtapa, {
+      data: {
+        data: this.optionsEtapas
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Etapa seleccionada desde diálogo:', result);
+        // Aquí puedes guardar la etapa seleccionada en tu componente principal
+        this.selectedEtapas = [result]; // Si quieres guardar solo la seleccionada
+      }
+    });
+
+
+
+  }
+}
+
+
+
+@Component({
+  selector: 'dialog-etapa',
+  templateUrl: 'dialog-etapa.html',
+  imports: 
+  [
+  MatDialogTitle,
+  MatDialogContent,
+  MatListModule,
+  FormsModule,
+  ReactiveFormsModule,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatListModule,
+  FormsModule,
+  ReactiveFormsModule,
+  CommonModule,
+  MatButtonModule
+],
+})
+export class DialogEtapa implements OnInit {
+  data = inject(MAT_DIALOG_DATA);
+
+  dialogRef = inject(MatDialogRef<DialogEtapa>);
+  
+  optionsEtapas: EtapaModel[] = [];
+  form: FormGroup;
+  etapasControl = new FormControl();
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      etapa: this.etapasControl
+    });
+  }
+
+  ngOnInit() {
+    // Acceder correctamente a los datos pasados
+    this.optionsEtapas = this.data.data;
+    console.log('Opciones de etapas en dialog:', this.optionsEtapas);
   }
 
   onOptionSelected(event: any) {
-    const selectedValue = event.option.value;
-    
-    if (!this.selectedEtapas.includes(selectedValue)) {
-      this.selectedEtapas.push(selectedValue);
-    }
-
-    this.myControl.setValue(''); // Limpiar el input después de seleccionar
+    const selectedValue = this.etapasControl.value;
+    console.log('Etapa seleccionada:', selectedValue);
   }
-
-  removeItem(item: EtapaModel) {
-    this.selectedEtapas = this.selectedEtapas.filter(option => option.nombre_etapa !== item.nombre_etapa);
+  
+  closeDialog() {
+    this.dialogRef.close(this.etapasControl.value);
   }
-
 }

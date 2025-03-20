@@ -7,7 +7,7 @@ import {MatCardModule} from '@angular/material/card';
 import { EspeciesService } from './services/especies-service.service';
 
 @Component({
-  imports: [RouterOutlet, FormdataComponent, MatCardModule],
+  imports: [RouterOutlet, FormdataComponent, MatCardModule,],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

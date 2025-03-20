@@ -36,11 +36,10 @@ export class SearchInpComponent implements OnInit{
   optionsEspecies: EspecieModel[] = []; //api data from endpoint
   filteredOptions!: Observable<EspecieModel[]>;
   // Lista de seleccionados
-  selectedEspecies: EspecieModel[] = [];
+  selectedEspecies: EspecieModel | null = null;
 
   constructor(private especiesService: EspeciesService) {
   }
-
 
   ngOnInit(){
 
@@ -72,14 +71,17 @@ export class SearchInpComponent implements OnInit{
     
     this.especiesService.setEspecieSeleccionada(selectedValue.id_especie)
 
-    if (!this.selectedEspecies.includes(selectedValue)) {
-      this.selectedEspecies.push(selectedValue);
-    }
+    this.selectedEspecies = selectedValue;
+
+    //if (!this.selectedEspecies.includes(selectedValue)) {
+    //  this.selectedEspecies.push(selectedValue);
+    //}
 
     this.myControl.setValue(''); // Limpiar el input después de seleccionar
   }
 
-  removeItem(item: EspecieModel) {
-    this.selectedEspecies = this.selectedEspecies.filter(option => option.nombre !== item.nombre);
+  removeItem() {
+    this.selectedEspecies = null;
+    // this.selectedEspecies = this.selectedEspecies.filter(option => option.nombre !== item.nombre);
   }
 }

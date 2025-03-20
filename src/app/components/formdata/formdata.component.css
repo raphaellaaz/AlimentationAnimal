@@ -6,30 +6,21 @@
   border-bottom: none; /* Eliminamos la línea horizontal inferior */
 }
 
-.etapa_especie {
-  display: flex; /* Usamos flexbox para alinear los elementos en una fila */
-  justify-content: space-between; /* Distribuye el espacio entre los elementos */
-  gap: 10px; /* Espacio entre los elementos, puedes ajustarlo */
-}
-
-.especie {
-  flex: 1;
-}
 .example-full-width {
   width: 100%;
   margin-bottom: 15px;
 }
 
-
-
-.buttons {
-  margin-top: 20px;
-  text-align: left;
-  padding-left: 0;
+.etapa_especie{
+  display: flex;
 }
 
-.buttons button {
-  margin-right: 10px;
+.especie{
+  flex: 0.8;
+}
+
+.etapa{
+  flex: 0.2;
 }
 
 /* Añadimos la línea vertical */
