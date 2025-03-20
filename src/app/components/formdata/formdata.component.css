@@ -1,11 +1,11 @@
 .form-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  max-width: 1200px;  /* El ancho máximo del contenedor principal */
-  margin: 40px auto;  /* Centrado automático con margen superior e inferior */
-  padding: 40px;  /* Aumenté el relleno para más espacio */
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -24,10 +24,9 @@
 }
 
 .right-side-box {
-  width: 50%; /* El cuadro de información ocupa el 50% del contenedor principal */
-  padding: 40px;  /* Aumenté el relleno para más espacio */
-  height: 250px;
-  background: hsl(0, 0%, 97%);
+  width: 50%;
+  padding: 30px;
+  background: #f7f7f7;
   border-radius: 12px;
   border: 1px solid #ddd;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -36,10 +35,45 @@
   justify-content: center;
 }
 
+.top-bar {
+  width: 99%;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #c5caeb;
+  color: white;
+  padding: 5px;
+  display: flex;
+  justify-content: flex-end; /* Alineamos los botones a la izquierda */
+  align-items: center;
+  position: relative;
+  border-radius: 0px 0px 5px 5px;
+  margin-bottom: 20px;
+  height: 6vh;
+}
+
+.top-bar .button-group {
+  display: flex;
+  gap: 15px; /* Reducido el espacio entre los botones */
+}
+
+.top-bar button {
+  background-color: #ffffff;
+  color: #3f51b5;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.top-bar button:hover {
+  background-color: #f0f0f0;
+}
+
 .button-group {
   display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
+  justify-content: flex-start; /* Alineamos más a la izquierda */
 }
 
 button {
