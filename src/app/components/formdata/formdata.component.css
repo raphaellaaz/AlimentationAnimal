@@ -1,8 +1,11 @@
 .form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  max-width: 600px;
-  margin: 40px;
-  padding: 25px;
+  max-width: 1200px;  /* El ancho máximo del contenedor principal */
+  margin: 40px auto;  /* Centrado automático con margen superior e inferior */
+  padding: 40px;  /* Aumenté el relleno para más espacio */
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -18,6 +21,19 @@
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.right-side-box {
+  width: 50%; /* El cuadro de información ocupa el 50% del contenedor principal */
+  padding: 40px;  /* Aumenté el relleno para más espacio */
+  height: 250px;
+  background: hsl(0, 0%, 97%);
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .button-group {

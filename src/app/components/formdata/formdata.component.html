@@ -1,18 +1,25 @@
 <form class="form-container">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Cantidad a Formular</mat-label>
-    <input matInput type="number" placeholder="Kilogramos" [(ngModel)]="cantidad" name="cantidad">
-  </mat-form-field>
+  <div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cantidad a Formular</mat-label>
+      <input matInput type="number" placeholder="Kilogramos" [(ngModel)]="cantidad" name="cantidad">
+    </mat-form-field>
 
-  <div class="form-row">
-    <app-searchespecie-inp [(ngModel)]="especie" name="especie"></app-searchespecie-inp>
-    <app-searchetapa-inp [(ngModel)]="etapa" name="etapa"></app-searchetapa-inp>
+    <div class="form-row">
+      <app-searchespecie-inp [(ngModel)]="especie" name="especie"></app-searchespecie-inp>
+      <app-searchetapa-inp [(ngModel)]="etapa" name="etapa"></app-searchetapa-inp>
+    </div>
+
+    <app-searchingrediente-inp [(ngModel)]="ingrediente" name="ingrediente"></app-searchingrediente-inp>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary">Formular</button>
+      <button mat-button color="warn">Limpiar</button>
+    </div>
   </div>
 
-  <app-searchingrediente-inp [(ngModel)]="ingrediente" name="ingrediente"></app-searchingrediente-inp>
-
-  <div class="button-group">
-    <button mat-raised-button color="primary">Formular</button>
-    <button mat-button color="warn">Limpiar</button>
+  <div class="right-side-box">
+    <h3>Información Formulario</h3>
+    <p> Puedes añadir más contenido aquí.</p>
   </div>
 </form>
