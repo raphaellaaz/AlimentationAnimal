@@ -1,0 +1,26 @@
+<div class="forgot-password-container">
+    <mat-card class="forgot-password-card">
+      <mat-card-content>
+        <h1 class="title">Recuperar Contraseña</h1>
+  
+        <form>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Correo electrónico</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput type="email" placeholder="Ingresa tu correo electrónico">
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" class="full-width">
+            <mat-icon>send</mat-icon>
+            Enviar enlace de recuperación
+          </button>
+        </form>
+  
+        <p class="login-text">
+          ¿Ya tienes una cuenta? 
+          <a routerLink="/login" class="login-link">Inicia sesión</a>
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

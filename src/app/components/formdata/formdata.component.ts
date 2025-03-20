@@ -17,6 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 
 import { SimplexOptimizer } from '../../formulation/formulation';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-formdata',
   standalone: true,
@@ -32,6 +33,8 @@ import { SimplexOptimizer } from '../../formulation/formulation';
     SearchIngrediente,
     SearchEtapa,
     MatButtonModule,
+    RouterLink,
+    
   ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css'

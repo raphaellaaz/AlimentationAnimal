@@ -1,0 +1,60 @@
+.forgot-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #cacaca;
+  }
+  
+  .forgot-password-card {
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  mat-form-field {
+    display: flex;
+    align-items: center;
+  }
+  
+  mat-icon {
+    margin-right: 5px;
+    color: #1976d2;
+  }
+  
+  button mat-icon {
+    margin-right: 8px;
+  }
+  
+  .login-text {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .login-link {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .login-link:hover {
+    text-decoration: underline;
+  }
+  

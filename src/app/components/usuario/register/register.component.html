@@ -1,0 +1,66 @@
+<div class="container">
+  <!-- Sección de la Imagen -->
+  <div class="image-section"></div>
+
+  <!-- Sección del Formulario -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <h1 class="title">Crea tu cuenta</h1>
+      <p class="description">
+        Completa los siguientes datos para verificar tu cuenta personal y comenzar a configurar tu perfil.
+      </p>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Juan">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput placeholder="Pérez">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Número de teléfono</mat-label>
+          <input matInput placeholder="XXX-XX-XXXX-XXX">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" placeholder="juanperez@example.com">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" placeholder="Ingresa tu contraseña">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput type="password" placeholder="Repite tu contraseña">
+        </mat-form-field>
+      </div>
+
+      <!-- Botones de Registro y Google -->
+      <div class="button-container">
+        <button mat-raised-button color="primary" class="submit-btn">
+          Registrarse
+        </button>
+
+        <button mat-stroked-button color="warn" class="google-btn">
+          <div class="google-content">
+            <img src="https://www.svgrepo.com/show/355037/google.svg" class="google-icon" alt="Google">
+            <span>Registrarse con Google</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Redirección al Login -->
+      <p class="signup-text">
+        ¿Ya tienes una cuenta? 
+        <a href="/login" class="signup-link">Inicia Sesión</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
