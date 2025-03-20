@@ -12,7 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { SearchInpComponent as SearchEspecie} from '../especies/search-inp/search-inp.component';
 import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-inp/search-inp.component';
 import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-inp.component';
-
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-formdata',
   standalone: true,
@@ -27,11 +27,18 @@ import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-i
     SearchEspecie,
     SearchIngrediente,
     SearchEtapa,
-],
+    MatButtonModule,
+  ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css'
 })
-export class FormdataComponent implements OnInit{
+export class FormdataComponent implements OnInit {
+
+  cantidad: number | null = null;
+  especie: any; // Ajusta el tipo según tu modelo de datos
+  etapa: any;   // Ajusta el tipo según tu modelo de datos
+  ingrediente: any; // Ajusta el tipo según tu modelo de datos
+
   constructor() {}
 
   ngOnInit() {}

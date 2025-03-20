@@ -1,15 +1,22 @@
 <form class="form-data">
 
-    <mat-form-field class="example-full-width">
-      <mat-label>Cantidad a Formular</mat-label>
-      <input matInput type="number" placeholder="kilogramos">
-    </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Cantidad a Formular</mat-label>
+    <input matInput type="number" placeholder="kilogramos" [(ngModel)]="cantidad" name="cantidad">
+  </mat-form-field>
 
-    <app-searchespecie-inp></app-searchespecie-inp>
+  <div class="etapa_especie">
+    <app-searchespecie-inp class="etapa" [(ngModel)]="especie" name="especie"></app-searchespecie-inp>
 
-    <app-searchetapa-inp></app-searchetapa-inp>
-    <br>
-    
-    <app-searchingrediente-inp></app-searchingrediente-inp>
-    
+  <app-searchetapa-inp class="etapa" [(ngModel)]="etapa" name="etapa"></app-searchetapa-inp>
+
+  </div>
+
+  <app-searchingrediente-inp [(ngModel)]="ingrediente" name="ingrediente"></app-searchingrediente-inp>
+
+  <div class="buttons">
+    <button mat-raised-button color="primary">Formular</button>
+    <button mat-button>Limpiar</button>
+  </div>
+
 </form>
