@@ -1,6 +1,6 @@
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, Validators} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -37,6 +37,14 @@ import { SimplexOptimizer } from '../../formulation/formulation';
   styleUrl: './formdata.component.css'
 })
 export class FormdataComponent implements OnInit {
+  formulario = new FormControl('', [Validators.required]);
+  peso: number = 0;
+  
+  onChangeValue(event: Event){
+    this.peso = Number((event.target as HTMLInputElement).value);
+    console.log(this.peso);
+  }
+
   ngOnInit(): void {
     throw new Error('Method not implemented.');
   }
