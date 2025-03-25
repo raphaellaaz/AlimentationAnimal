@@ -35,6 +35,7 @@
 }
 
 .etapa{
+  margin-left: 20px;
   flex: 0.2;
 }
 .formform{
@@ -43,16 +44,50 @@
 .right-side-box {
   flex: 0.5;
   width: 50%; 
-  padding: 40px;
+  padding: 15px;
   background: #f7f7f7;
   border-radius: 12px;
   border: 1px solid #ddd;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+ 
   height: 53vh;
 }
+.tags {
+  display: inline-block;
+    width: 80px; /* Ajusta el ancho */
+    text-align: left;
+}
+
+.tags-value {
+  display: inline-block;
+  width: 150px; /* Ajusta según necesites */
+  text-align: left;
+}
+
+
+
+.small-list {
+  max-height: 150px;  /* Ajusta según necesites */
+  overflow-y: auto;   /* Permite scroll si hay muchos elementos */
+  background: #f9f9f9;
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+}
+
+.small-item {
+  font-size: 12px;   /* Tamaño de letra más pequeño */
+  padding: 2px 8px;  /* Espaciado más compacto */
+}
+
+
+
+
+
+
+
 
 .top-bar {
   width: 99%;
@@ -101,3 +136,4 @@ button {
   font-size: 16px;
   border-radius: 6px;
 }
+

@@ -42,8 +42,7 @@ export class SearchInpComponent implements OnInit{
   }
 
   ngOnInit(){
-
-    this.especiesService.getAllEspecies().subscribe(
+    this.especiesService.getAllEspecies().subscribe(  //obtenemos todos los datos de Especies
       data => {
       this.optionsEspecies = data.map(( especies: EspecieModel) =>({
           id_especie: especies.id_especie,
@@ -53,10 +52,9 @@ export class SearchInpComponent implements OnInit{
       console.log(data)
     });
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.myControl.valueChanges.pipe( //filtramos segun lo que se escribe
       startWith(''),
       map(value => this._filter(value || '' ))
-      
     );
   }
 
@@ -66,22 +64,20 @@ export class SearchInpComponent implements OnInit{
     return this.optionsEspecies.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
-  onOptionSelected(event: any) {
+  onOptionSelected(event: any) { //cuando se selecciona se obtniene el valor del seleccionadp 
     const selectedValue = event.option.value;
+    console.log(selectedValue)
     
-    this.especiesService.setEspecieSeleccionada(selectedValue.id_especie)
+    this.especiesService.setEspecieSeleccionada(selectedValue)
 
     this.selectedEspecies = selectedValue;
 
-    //if (!this.selectedEspecies.includes(selectedValue)) {
-    //  this.selectedEspecies.push(selectedValue);
-    //}
-
-    this.myControl.setValue(''); // Limpiar el input después de seleccionar
+    this.myControl.setValue(''); 
   }
 
   removeItem() {
     this.selectedEspecies = null;
     // this.selectedEspecies = this.selectedEspecies.filter(option => option.nombre !== item.nombre);
+    this.especiesService.setEspecieSeleccionada(null);
   }
 }

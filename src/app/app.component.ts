@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { IngredientesServiceService } from './services/ingredientes-service.service';
+import { IngredientesService } from './services/ingredientes-service.service';
 import { FormdataComponent } from './components/formdata/formdata.component';
 import {ChangeDetectionStrategy} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
@@ -16,7 +16,7 @@ import { EspeciesService } from './services/especies-service.service';
 export class AppComponent implements OnInit{
   title = 'frontanimal';
 
-  constructor(private apiIngredientes: IngredientesServiceService, private apiEspecies: EspeciesService) {}
+  constructor(private apiIngredientes: IngredientesService, private apiEspecies: EspeciesService) {}
 
   ngOnInit() {
     //this.apiIngredientes.getAllIngredientes().subscribe(

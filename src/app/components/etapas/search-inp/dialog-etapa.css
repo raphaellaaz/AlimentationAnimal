@@ -1,0 +1,12 @@
+.nombre-etapa {
+    display: inline-block;
+    width: 150px; /* Ajusta según necesites */
+    text-align: left;
+  }
+  
+  .edad-inicio, .edad-fin {
+    display: inline-block;
+    width: 80px; /* Ajusta el ancho */
+    text-align: center;
+  }
+  

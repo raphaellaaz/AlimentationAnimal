@@ -1,4 +1,4 @@
-<mat-form-field class="example-full-width">
+<mat-form-field appearance="outline" class="example-full-width">
   <mat-label>Especie</mat-label>
   <input type="text" placeholder="Buscar" aria-label="Especie" matInput [formControl]="myControl"
     [matAutocomplete]="auto">
@@ -8,7 +8,6 @@
     }
   </mat-autocomplete>
   <div class="selected-items">
-    <!--@for (especie of selectedEspecies; track $index) { -->
     @if (selectedEspecies) {
     <mat-chip [removable]="true" (removed)="removeItem()">
       {{ selectedEspecies.nombre }}

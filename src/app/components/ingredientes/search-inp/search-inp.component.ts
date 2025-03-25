@@ -15,7 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { IngredienteModel } from '../../../models/ingrediente.model';
 
-import { IngredientesServiceService } from '../../../services/ingredientes-service.service';
+import { IngredientesService } from '../../../services/ingredientes-service.service';
 
 @Component({
   selector: 'app-searchingrediente-inp',
@@ -42,7 +42,7 @@ export class SearchInpComponent implements OnInit {
   // Lista de seleccionados
   selectedIngredientes: IngredienteModel[] = [];
 
-  constructor(private ingredienteService: IngredientesServiceService) {}
+  constructor(private ingredienteService: IngredientesService) {}
 
   ngOnInit() {
     this.ingredienteService.getAllIngredientes().subscribe((data) => {
@@ -77,6 +77,7 @@ export class SearchInpComponent implements OnInit {
     }
     this.myControl.setValue(''); // Limpiar el input después de seleccionar
     console.log(this.selectedIngredientes);
+    this.ingredienteService.setIngredienteSeleccionado(this.selectedIngredientes);
   }
 
   removeItem(item: IngredienteModel) {

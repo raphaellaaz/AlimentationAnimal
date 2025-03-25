@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IngredienteModel as Ingrediente } from '../models/ingrediente.model';
 import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IngredientesServiceService {
+export class IngredientesService {
   private apiUrl = `${environment.API_URL}ingredientes`; // URL de la API
 
   constructor(private http: HttpClient) { }
+
+
+  private ingredienteSeleccionado = new BehaviorSubject<Ingrediente[] | null>(null);
+  ingredienteSeleccionado$ = this.ingredienteSeleccionado.asObservable();
+    
+  setIngredienteSeleccionado(ingrediente: Ingrediente[] | null) {
+    this.ingredienteSeleccionado.next(ingrediente);
+  }
 
   // Obtener todos los ingredientes
   getAllIngredientes(): Observable<Ingrediente[]> {

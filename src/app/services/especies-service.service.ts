@@ -9,15 +9,15 @@ import { environment } from '../../environment';
 })
 export class EspeciesService {
 
-  private especieSeleccionada = new BehaviorSubject<number | null>(null);
+  private especieSeleccionada = new BehaviorSubject<Especie | null>(null);
   especieSeleccionada$ = this.especieSeleccionada.asObservable();
   private apiUrl = `${environment.API_URL}especies`; // URL de la API
 
   constructor(private http: HttpClient) { }
  
 
-  setEspecieSeleccionada(id: number) {
-    this.especieSeleccionada.next(id);
+  setEspecieSeleccionada(especie: Especie | null) {
+    this.especieSeleccionada.next(especie);
   }
 
   // Obtener todas las especies

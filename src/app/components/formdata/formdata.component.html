@@ -33,7 +33,44 @@
   </div>
 
   <div class="right-side-box">
-    <h3>Información adicional</h3>
-    <p>Este es un cuadro grande en la parte derecha. Puedes añadir más contenido aquí.</p>
+    
+
+        <table class="info-table">
+          <!-- Cantidad -->
+          <tr>
+            <td class="tags">Cantidad:</td>
+            <td class="tags-value">{{ peso }} Kg</td>
+          </tr>
+    
+          <!-- Especie -->
+          <tr>
+            <td class="tags">Especie:</td>
+            <td class="tags-value">{{ selectedEspecie.nombre }}</td>
+          </tr>
+    
+          <!-- Etapa -->
+          <tr>
+            <td class="tags">Etapa:</td>
+            <td class="tags-value">{{ selectedEtapa.nombre_etapa}}</td>
+          </tr>
+        </table>
+    
+        <!-- Ingredientes -->
+        <div class="ingredients-section">
+          <h3>Ingredientes:</h3>
+          
+          <mat-list class="small-list">
+            @for (item of selectedIngredientes; track $index) {
+              <mat-list-item class="small-item">{{item.Nombre_Ingrediente}}</mat-list-item>
+            }
+           </mat-list>
+    
+          <!-- Si hay muchos ingredientes, mostrar como tabla -->
+         
+        </div>
+   
+    
+
+
   </div>
 </form>
