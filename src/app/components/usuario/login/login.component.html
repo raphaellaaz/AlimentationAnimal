@@ -1,0 +1,36 @@
+<div class="login-container">
+	<mat-card class="login-card">
+	  <mat-card-content>
+		<h1 class="title">Inicia sesión</h1>
+
+		<form>
+		  <mat-form-field appearance="outline" class="full-width">
+			<mat-label>Correo electrónico</mat-label>
+			<input matInput type="email" placeholder="Ingresa tu correo electrónico">
+		  </mat-form-field>
+
+		  <mat-form-field appearance="outline" class="full-width">
+			<mat-label>Contraseña</mat-label>
+			<input matInput type="password" placeholder="Ingresa tu contraseña">
+		  </mat-form-field>
+
+		  <div class="options">
+			<mat-checkbox>Recuérdame</mat-checkbox>
+			<a routerLink="/recover" class="forgot-password">¿Olvidaste tu contraseña?</a>
+		  </div>
+
+		  <button mat-raised-button color="primary" class="full-width">Iniciar sesión</button>
+
+		  <!-- Botón de Google con texto centrado -->
+		  <button mat-raised-button class="google-btn full-width">
+			<div class="google-content">
+			<img class="google-icon" src="https://i.imgur.com/arC60SB.png" alt="Google">
+			<span>Iniciar sesión con Google</span>
+		</div>
+		  </button>
+		</form>
+
+		<p class="signup-text">¿No tienes una cuenta? <a routerLink="/register" class="signup-link">Únete hoy</a></p>
+	  </mat-card-content>
+	</mat-card>
+</div>

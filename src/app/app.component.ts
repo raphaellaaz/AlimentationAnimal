@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { IngredientesService } from './services/ingredientes-service.service';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormdataComponent } from './components/formdata/formdata.component';
 import {ChangeDetectionStrategy} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import { EspeciesService } from './services/especies-service.service';
 
 @Component({
-  imports: [RouterOutlet, FormdataComponent, MatCardModule,],
+  imports: [RouterOutlet, FormdataComponent, MatCardModule, RouterLinkActive, RouterLink],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-formdata',
   standalone: true,
@@ -44,7 +45,9 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatCardModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    RouterLink,
+    
   ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css',
