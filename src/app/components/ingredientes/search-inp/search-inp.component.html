@@ -6,14 +6,14 @@
            matInput
            [formControl]="myControl"
            [matAutocomplete]="auto">
-           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onShowInputPrice($event)">
       @for (option of filteredOptions | async; track option) {
         <mat-option [value]="option">{{option.Nombre_Ingrediente}}</mat-option>
       }
     </mat-autocomplete>
 
     <div class="selected-items">
-      @for (item of selectedIngredientes; track $index) {
+      @for (item of ingredientesConPrecio; track $index) {
         <mat-chip [removable]="true" (removed)="removeItem(item)">
           {{ item.Nombre_Ingrediente }}
           <mat-icon matChipRemove>close</mat-icon>
@@ -25,7 +25,7 @@
   
   <div>
     <mat-list #ingrediente>
-      @for (ingrediente of selectedIngredientes; track ingrediente) {
+      @for (ingrediente of ingredientesConPrecio; track ingrediente) {
         <mat-card appearance="outlined">
           <mat-card-content class="list_card">
 
@@ -33,19 +33,11 @@
             
             <mat-list-item class="list_ingrediente"  >
               {{ingrediente.Nombre_Ingrediente}}
-              {{ ingrediente.ALMIDON____}}
-              {{ingrediente.ARG____}}
-            </mat-list-item>
-            
-            <mat-form-field class="field_price" >
-              <input 
-              type="number"
-              placeholder="Precio/kg"
-              aria-label="Precio"
-              matInput
-              >
 
-            </mat-form-field>
+              <span>Precio: {{ingrediente.precio}} $/Kg</span>
+              
+            </mat-list-item>
+
 
           </mat-card-content>
         </mat-card>

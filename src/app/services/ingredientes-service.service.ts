@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IngredienteModel as Ingrediente } from '../models/ingrediente.model';
 import { environment } from '../../environment';
+import { IngredienteConPrecio } from '../interfaces/ingrediente_interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class IngredientesService {
   constructor(private http: HttpClient) { }
 
 
-  private ingredienteSeleccionado = new BehaviorSubject<Ingrediente[] | null>(null);
+  private ingredienteSeleccionado = new BehaviorSubject<IngredienteConPrecio[] | null>(null);
   ingredienteSeleccionado$ = this.ingredienteSeleccionado.asObservable();
     
-  setIngredienteSeleccionado(ingrediente: Ingrediente[] | null) {
+  setIngredienteSeleccionado(ingrediente: IngredienteConPrecio[] | null) {
     this.ingredienteSeleccionado.next(ingrediente);
   }
 

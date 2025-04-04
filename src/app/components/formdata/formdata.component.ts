@@ -4,7 +4,7 @@ import { FormsModule, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { isEmpty, map, startWith } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
@@ -15,19 +15,24 @@ import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-i
 import { MatButtonModule } from '@angular/material/button';
 
 
-import { SimplexOptimizer } from '../../formulation/formulation';
+//import { SimplexOptimizer } from '../../formulation/formulation';
 import { EtapasService } from '../../services/etapas-service.service';
 import { EspeciesService } from '../../services/especies-service.service';
 import { IngredientesService } from '../../services/ingredientes-service.service';
 
 import { EtapaModel } from '../../models/etapa-desarrollo.model';
 import { EspecieModel } from '../../models/especie.model';
-import { IngredienteModel } from '../../models/ingrediente.model';
+
 import { MatCardModule } from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
-
 import { RouterLink } from '@angular/router';
+
+import { IngredienteConPrecio } from '../../interfaces/ingrediente_interfaces';
+
+import { optimizeFormulation } from '../../formulation/formulation';
+
+
 @Component({
   selector: 'app-formdata',
   standalone: true,
@@ -61,7 +66,7 @@ export class FormdataComponent implements OnInit {
 
   selectedEtapa: EtapaModel; 
   selectedEspecie: EspecieModel;
-  selectedIngredientes: IngredienteModel[] = [];
+  selectedIngredientes: IngredienteConPrecio[] = [];
   
   
   
@@ -99,7 +104,7 @@ export class FormdataComponent implements OnInit {
 
   }
 
-  
+  /////////////////////////////Obtencion de Datos de Otros Forms de Seleccion ////////////////////////////////
   setEtapa(){
     this.etapaService.etapaSeleccionada$.subscribe((etapa) => { /// Etapa Selccionada
       if (etapa !== null) {
@@ -122,14 +127,25 @@ export class FormdataComponent implements OnInit {
     this.ingredienteService.ingredienteSeleccionado$.subscribe((ingrediente) => {  /// Especie Selccionada
       if (ingrediente !== null) {
         this.selectedIngredientes = ingrediente;
-        console.log('Especie recibido:', this.selectedEspecie);
+        console.log('Ingrediente recibido desde service:', this.selectedIngredientes);
         this.cdRef.detectChanges();
       }
     });
   }
 
+  ////////////////////////////////////Implementacion de Formulation.ts/////////////////////////////////////
+
+  
 
 
-
+  onFormular(): any {
+    if(this.peso > 0 && this.selectedIngredientes.length >= 1 ){
+      optimizeFormulation(this.peso , this.selectedIngredientes);
+    }else{
+      console.log("Ingresa un valor valido de Peso/Cantidad Ingrediente a calcular")
+    }
+    
+    
+  }
 
 }
