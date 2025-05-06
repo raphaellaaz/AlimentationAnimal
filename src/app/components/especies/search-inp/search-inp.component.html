@@ -1,5 +1,6 @@
 <mat-form-field appearance="outline" class="example-full-width">
   <mat-label>Especie</mat-label>
+  <mat-icon matPrefix style="color: #f44336;">pets</mat-icon>
   <input type="text" placeholder="Buscar" aria-label="Especie" matInput [formControl]="myControl"
     [matAutocomplete]="auto">
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">

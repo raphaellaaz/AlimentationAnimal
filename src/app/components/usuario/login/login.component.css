@@ -1,62 +1,66 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1486520299386-6d106b22014b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80');
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .login-card {
-    width: 400px;
-    padding: 20px;
-    text-align: center;
-    background: white;
-  }
-  
-  .full-width {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  
-  .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .forgot-password {
-    color: #1976d2;
-    cursor: pointer;
-  }
-  
-  .google-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #4285F4;
-    color: white;
-  }
-  .google-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .google-icon {
-    width: 20px;
-    margin-right: 10px;
-  }
-  
-  .signup-text {
-    margin-top: 15px;
-  }
-  
-  .signup-link {
-    color: #1976d2;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../../../../assets/imagenes/logo3.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.login-card {
+  width: 400px;
+  padding: 20px;
+  text-align: center;
+  background: rgba(255,255,255,1);
+  background-image: url('../../../../assets/imagenes/atomos.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.forgot-password {
+  color: #1976d2;
+  cursor: pointer;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4285F4;
+  color: white;
+}
+.google-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.google-icon {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.signup-text {
+  margin-top: 15px;
+}
+
+.signup-link {
+  color: #1976d2;
+  cursor: pointer;
+}

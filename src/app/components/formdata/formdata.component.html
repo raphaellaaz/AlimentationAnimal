@@ -1,8 +1,14 @@
 <div class="top-bar">
+  <img src="/assets/imagenes/LOGOTIPO UNL_Mesa de trabajo 1.png" alt="Logo UNL" class="logo-unl">
   <div class="button-group">
-    <button routerLink="/login">Iniciar Sesión</button>
-
-    <button routerLink="/register">Registrarse</button>
+    <button routerLink="/login">
+      <mat-icon>login</mat-icon>
+      Iniciar Sesión
+    </button>
+    <button routerLink="/register">
+      <mat-icon>person_add</mat-icon>
+      Registrarse
+    </button>
   </div>
 </div>
 
@@ -13,23 +19,36 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Cantidad a Formular</mat-label>
+      <mat-icon matPrefix>scale</mat-icon>
       <input matInput type="number" min="0" (input)="onChangeValue($event)" placeholder="kilogramos">
     </mat-form-field>
 
 
     <div class="etapa_especie">
 
-      <app-searchespecie-inp class="especie"></app-searchespecie-inp>
+      <app-searchespecie-inp class="especie">
+        <mat-icon matPrefix>pets</mat-icon>
+      </app-searchespecie-inp>
 
-      <app-searchetapa-inp class="etapa"></app-searchetapa-inp>
+      <app-searchetapa-inp class="etapa">
+        <mat-icon matPrefix>timeline</mat-icon>
+      </app-searchetapa-inp>
       
     </div>
 
-    <app-searchingrediente-inp></app-searchingrediente-inp>
+    <app-searchingrediente-inp>
+      <mat-icon matPrefix>inventory_2</mat-icon>
+    </app-searchingrediente-inp>
 
     <div class="button-group">
-      <button mat-raised-button color="primary" (click)="onFormular()">Formular</button>
-      <button mat-button color="warn">Limpiar</button>
+      <button mat-raised-button color="primary" (click)="onFormular()">
+        <mat-icon>calculate</mat-icon>
+        Formular
+      </button>
+      <button mat-button color="warn">
+        <mat-icon>delete_sweep</mat-icon>
+        Limpiar
+      </button>
     </div>
   </div>
 
@@ -75,3 +94,5 @@
 
   </div>
 </form>
+
+<img src="assets/imagenes/login-background.png" class="logo-esquina" alt="Logo esquina">

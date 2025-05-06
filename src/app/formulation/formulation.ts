@@ -332,7 +332,7 @@
   }
   
   // Ejemplo de uso
-  function optimizeFormulation(): void {
+  export function optimizeFormulation(): void {
     // Definir ingredientes con su costo, peso y valores nutricionales
     const ingredients: Ingredient[] = [
       {

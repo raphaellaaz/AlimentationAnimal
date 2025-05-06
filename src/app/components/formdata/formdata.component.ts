@@ -140,7 +140,7 @@ export class FormdataComponent implements OnInit {
 
   onFormular(): any {
     if(this.peso > 0 && this.selectedIngredientes.length >= 1 ){
-      optimizeFormulation(this.peso , this.selectedIngredientes);
+      optimizeFormulation();
     }else{
       console.log("Ingresa un valor valido de Peso/Cantidad Ingrediente a calcular")
     }
