@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchInpComponent } from './search-inp.component';
+import { UsuarioAvanzadoComponent } from './usuario-avanzado.component';
 
-describe('SearchInpComponent', () => {
-  let component: SearchInpComponent;
-  let fixture: ComponentFixture<SearchInpComponent>;
+describe('UsuarioAvanzadoComponent', () => {
+  let component: UsuarioAvanzadoComponent;
+  let fixture: ComponentFixture<UsuarioAvanzadoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchInpComponent]
+      imports: [UsuarioAvanzadoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SearchInpComponent);
+    fixture = TestBed.createComponent(UsuarioAvanzadoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
