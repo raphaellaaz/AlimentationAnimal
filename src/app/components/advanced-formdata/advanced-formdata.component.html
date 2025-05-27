@@ -1,0 +1,141 @@
+<div class="top-bar">
+  <img src="/assets/imagenes/LOGOTIPO UNL_Mesa de trabajo 1.png" alt="Logo UNL" class="logo-unl">
+  <div class="button-group">
+    <button mat-stroked-button routerLink="/login">
+      <mat-icon>login</mat-icon>
+      Iniciar Sesión
+    </button>
+    <button mat-stroked-button routerLink="/register">
+      <mat-icon>person_add</mat-icon>
+      Registrarse
+    </button>
+  </div>
+</div>
+
+<form class="form-container">
+  <div class="formform">
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Cantidad a Formular</mat-label>
+      <mat-icon matPrefix>scale</mat-icon>
+      <input matInput type="number" min="0" placeholder="kilogramos" [(ngModel)]="peso" name="pesoInput">
+    </mat-form-field>
+
+    <div class="etapa_especie">
+      <app-searchespecie-inp class="especie">
+        <mat-icon matPrefix>pets</mat-icon>
+      </app-searchespecie-inp>
+      <app-searchetapa-inp class="etapa">
+        <mat-icon matPrefix>timeline</mat-icon>
+      </app-searchetapa-inp>
+    </div>
+
+    <app-searchingrediente-inp>
+      <mat-icon matPrefix>inventory_2</mat-icon>
+    </app-searchingrediente-inp>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" (click)="onFormular()" [disabled]="isLoading">
+        <mat-icon>calculate</mat-icon>
+        <span *ngIf="!isLoading">Formular</span>
+        <span *ngIf="isLoading">Formulando...</span>
+      </button>
+      <button mat-button color="warn" (click)="onLimpiar()" [disabled]="isLoading">
+        <mat-icon>delete_sweep</mat-icon>
+        Limpiar
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-indicator">
+      <mat-spinner diameter="30"></mat-spinner>
+      <span>Procesando, por favor espere...</span>
+    </div>
+
+    <div *ngIf="formulationError && !formulationResult" class="error-message mat-warn">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ formulationError }}</span>
+    </div>
+  </div>
+
+  <div class="right-side-box">
+    <!-- This will now be part of results-and-charts-container -->
+    <div class="results-and-charts-container">
+      <div class="formulation-results">
+        <div class="summary-card">
+          <h3>Resumen de Selección</h3>
+          <table class="info-table">
+            <tr>
+              <td class="tags">Cantidad:</td>
+              <td class="tags-value">{{ peso || 0 }} Kg</td>
+            </tr>
+            <tr>
+              <td class="tags">Especie:</td>
+              <td class="tags-value">{{ selectedEspecie?.nombre || 'No seleccionada' }}</td>
+            </tr>
+            <tr>
+              <td class="tags">Etapa:</td>
+              <td class="tags-value">{{ selectedEtapa?.nombre_etapa || 'No seleccionada' }}</td>
+            </tr>
+          </table>
+          <div class="ingredients-section">
+            <h4>Ingredientes Seleccionados:</h4>
+            <mat-list class="small-list" *ngIf="selectedIngredientes.length > 0; else noIngredientes">
+              <mat-list-item *ngFor="let item of selectedIngredientes; trackBy: trackIngredient" class="small-item">
+                {{ item.Nombre_Ingrediente }} (Precio: {{ item.precio | number:'1.2-2' }})
+              </mat-list-item>
+            </mat-list>
+            <ng-template #noIngredientes>
+              <p>No hay ingredientes seleccionados.</p>
+            </ng-template>
+          </div>
+        </div>
+
+        <div *ngIf="formulationError && formulationResult" class="error-message mat-warn results-error">
+             <mat-icon>error_outline</mat-icon>
+             <span>Error en la formulación: {{ formulationError }}</span>
+        </div>
+        
+        <div *ngIf="formulationResult" class="results-card">
+          <h3>Resultados de la Formulación</h3>
+          <table mat-table [dataSource]="getSolutionAsArray(formulationResult.solution)" class="mat-elevation-z2 result-table">
+            <ng-container matColumnDef="ingredient">
+              <th mat-header-cell *matHeaderCellDef> Ingrediente </th>
+              <td mat-cell *matCellDef="let element"> {{element.key}} </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Cantidad (Kg) </th>
+              <td mat-cell *matCellDef="let element"> {{element.value | number:'1.2-4'}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['ingredient', 'amount']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['ingredient', 'amount'];"></tr>
+          </table>
+          <h4>Costo Total: ${{ formulationResult.cost | number:'1.2-2' }}</h4>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section" *ngIf="formulationResult && !formulationError && pieChartDatasets.datasets[0]?.data?.length > 0">
+        <h2>Datos Estadísticos y Gráficos</h2>
+        
+        <div class="chart-container">
+          <canvas baseChart
+            [type]="pieChartType"
+            [data]="pieChartDatasets"
+            [options]="pieChartOptions"
+            [legend]="pieChartLegend">
+          </canvas>
+        </div>
+        
+        <div class="chart-container">
+          <canvas baseChart
+            [type]="barChartType"
+            [data]="barChartDatasets"
+            [options]="barChartOptions"
+            [legend]="barChartLegend">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<img src="assets/imagenes/login-background.png" class="logo-esquina" alt="Logo esquina">

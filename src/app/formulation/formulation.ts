@@ -331,82 +331,116 @@
     }
   }
   
-  // Ejemplo de uso
-  export function optimizeFormulation(): void {
-    // Definir ingredientes con su costo, peso y valores nutricionales
-    const ingredients: Ingredient[] = [
-      {
-        name: "Harina",
-        costPerUnit: 2.5,
-        weightPerUnit: 1,
-        nutrients: { "proteina": 10, "grasa": 1, "carbohidratos": 70 }
-      },
-      {
-        name: "Azucar",
-        costPerUnit: 3.0,
-        weightPerUnit: 1,
-        nutrients: { "proteina": 0, "grasa": 0, "carbohidratos": 99 }
-      },
-      {
-        name: "Huevo",
-        costPerUnit: 5.0,
-        weightPerUnit: 0.5,
-        nutrients: { "proteina": 13, "grasa": 11, "carbohidratos": 1 }
-      },
-      {
-        name: "Leche",
-        costPerUnit: 1.8,
-        weightPerUnit: 1,
-        nutrients: { "proteina": 3.3, "grasa": 3.6, "carbohidratos": 4.7 }
-      }
-    ];
-    
-    // Definir requisitos nutricionales
-    const nutrientRequirements: NutrientRequirement[] = [
-      { nutrient: "proteina", minValue: 20, maxValue: 50 },
-      { nutrient: "grasa", minValue: 10, maxValue: 30 },
-      { nutrient: "carbohidratos", minValue: 40 }
-    ];
-    
-    // Crear el problema de formulación
-    const problem: FormulationProblem = {
-      ingredients: ingredients,
-      nutrientRequirements: nutrientRequirements,
-      targetWeight: 100, // kg, g, etc.
-      minIngredientAmounts: {
-        "Huevo": 5
-      },
-      maxIngredientAmounts: {
-        "Azucar": 20
-      }
-    };
-    
-    // Resolver usando el optimizador Simplex
-    const optimizer = new SimplexOptimizer(problem);
-    try {
-      const result = optimizer.solve();
-      
-      console.log("Formulación óptima:");
-      for (const [ingredient, amount] of Object.entries(result.solution)) {
-        console.log(`${ingredient}: ${amount.toFixed(2)}`);
-      }
-      
-      console.log(`\nCosto total: $${result.cost.toFixed(2)}`);
-      
-      // Validar la solución
-      const isValid = optimizer.validateSolution(result.solution);
-      console.log(`\nLa solución ${isValid ? 'cumple' : 'no cumple'} con todas las restricciones.`);
-    } catch (error) {
-      console.error("Error al resolver el problema:");
-    }
+import { EspecieModel } from "../models/especie.model";
+import { EtapaModel } from "../models/etapa-desarrollo.model";
+import { IngredienteConPrecio } from "../interfaces/ingrediente_interfaces";
+import { IngredientesService } from "../services/ingredientes-service.service";
+import { EtapasService } from "../services/etapas-service.service";
+import { Observable, forkJoin, of } from "rxjs";
+import { map, catchError, switchMap } from "rxjs/operators";
+
+export function optimizeFormulation(
+  targetWeight: number,
+  selectedEspecie: EspecieModel,
+  selectedEtapa: EtapaModel,
+  selectedIngredientes: IngredienteConPrecio[],
+  ingredientesService: IngredientesService, // Injected service
+  etapasService: EtapasService // Injected service
+): Observable<{ solution: Record<string, number>, cost: number } | { error: string }> {
+
+  if (!selectedIngredientes || selectedIngredientes.length === 0) {
+    return of({ error: "No ingredients selected." });
   }
-  
-  // Ejecutar el ejemplo
-  // optimizeFormulation();
-  
-  export type { 
-    SimplexOptimizer,// class
-    Ingredient, //interface
-    NutrientRequirement, //interface
-    FormulationProblem //interface
-  };
+  if (!selectedEspecie || !selectedEspecie.id_especie) {
+    return of({ error: "Especie not selected or invalid." });
+  }
+  if (!selectedEtapa || !selectedEtapa.id_etapa_desarrollo) {
+    return of({ error: "Etapa not selected or invalid." });
+  }
+
+  // 1. Fetch detailed ingredient data
+  const ingredientDetailsObservables = selectedIngredientes.map(ing =>
+    ingredientesService.getIngredienteDetailsById(ing.id_ingrediente).pipe(
+      map(details => {
+        if (!details || !details.nutrients) {
+          throw new Error(`Nutrient details missing for ingredient ID: ${ing.id_ingrediente}`);
+        }
+        return {
+          name: ing.Nombre_Ingrediente,
+          costPerUnit: ing.precio || 0,
+          weightPerUnit: details.weightPerUnit || 1, // Default to 1 if not provided
+          nutrients: details.nutrients
+        } as Ingredient;
+      }),
+      catchError(err => {
+        console.error(`Error fetching details for ingredient ${ing.Nombre_Ingrediente}:`, err);
+        // Return an observable that emits an error-like structure or re-throw
+        return of({ error: `Failed to load details for ${ing.Nombre_Ingrediente}: ${err.message}` } as any);
+      })
+    )
+  );
+
+  return forkJoin(ingredientDetailsObservables).pipe(
+    switchMap((ingredientsData: Array<Ingredient | {error: string}>) => {
+      const actualIngredients = ingredientsData.filter(item => !item.hasOwnProperty('error')) as Ingredient[];
+      const errors = ingredientsData.filter(item => item.hasOwnProperty('error'));
+
+      if (errors.length > 0) {
+        return of({ error: `Errors fetching ingredient details: ${errors.map(e => (e as any).error).join(', ')}`});
+      }
+      if (actualIngredients.length === 0) {
+        return of({ error: "Could not load details for any selected ingredients." });
+      }
+
+      // 2. Fetch nutrient requirements
+      return etapasService.getNutrientRequirementsByEspecieAndEtapa(
+        selectedEspecie.id_especie!, // Assert non-null as checked above
+        selectedEtapa.id_etapa_desarrollo! // Assert non-null as checked above
+      ).pipe(
+        map((nutrientReqs: NutrientRequirement[]) => {
+          // 3. Create the formulation problem
+          const problem: FormulationProblem = {
+            ingredients: actualIngredients,
+            nutrientRequirements: nutrientReqs,
+            targetWeight: targetWeight,
+            // TODO: Define min/max ingredient amounts if necessary
+            minIngredientAmounts: {},
+            maxIngredientAmounts: {}
+          };
+
+          // 4. Solve using SimplexOptimizer
+          const optimizer = new SimplexOptimizer(problem);
+          try {
+            const result = optimizer.solve();
+            console.log("Formulación óptima:", result.solution);
+            console.log(`Costo total: $${result.cost.toFixed(2)}`);
+            const isValid = optimizer.validateSolution(result.solution);
+            console.log(`La solución ${isValid ? 'cumple' : 'no cumple'} con todas las restricciones.`);
+            return result;
+          } catch (error: any) {
+            console.error("Error al resolver el problema:", error.message);
+            return { error: error.message || "Error desconocido al resolver la formulación." };
+          }
+        }),
+        catchError(err => {
+          console.error("Error fetching nutrient requirements:", err);
+          return of({ error: `Failed to load nutrient requirements: ${err.message}` });
+        })
+      );
+    }),
+    catchError(err => {
+      // This catches errors from forkJoin itself or unhandled errors from ingredient fetching
+      console.error("Error processing ingredients:", err);
+      return of({ error: `Error processing ingredients: ${err.message}` });
+    })
+  );
+}
+
+// No ejecutar el ejemplo directamente aquí
+
+export type {
+  SimplexOptimizer, // class
+  Ingredient, // interface
+  NutrientRequirement, // interface
+  FormulationProblem // interface
+};

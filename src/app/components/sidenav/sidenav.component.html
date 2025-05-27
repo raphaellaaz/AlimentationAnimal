@@ -1,5 +1,31 @@
-<mat-drawer-container class="example-container">
-    <mat-drawer mode="side" opened>Drawer content</mat-drawer>
-    <mat-drawer-content>Main content</mat-drawer-content>  
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side" opened="true"> <!-- Default to opened -->
+    <mat-nav-list>
+      <a mat-list-item routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span matListItemTitle>Formulación Base</span>
+      </a>
+      <a mat-list-item routerLink="/advanced-formulation" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>science</mat-icon> <!-- Example icon -->
+        <span matListItemTitle>Formulación Avanzada</span>
+      </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="/login" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>login</mat-icon>
+        <span matListItemTitle>Iniciar Sesión</span>
+      </a>
+      <a mat-list-item routerLink="/register" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>person_add</mat-icon>
+        <span matListItemTitle>Registrarse</span>
+      </a>
+      <!-- Add other common navigation links here if needed -->
+    </mat-nav-list>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <!-- The main content will be rendered by the router-outlet in app.component.html -->
+    <!-- This SidenavComponent would need to be part of app.component.html structure -->
+    <ng-content></ng-content> <!-- If SidenavComponent wraps router-outlet -->
+  </div>
+
 </mat-drawer-container>
-  

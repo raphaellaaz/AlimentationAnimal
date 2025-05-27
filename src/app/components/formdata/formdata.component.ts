@@ -1,21 +1,21 @@
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, Validators } from '@angular/forms';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { isEmpty, map, startWith } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common'; // Import CommonModule
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { SearchInpComponent as SearchEspecie } from '../especies/search-inp/search-inp.component';
-import { SearchInpComponent as SearchIngrediente } from '../ingredientes/search-inp/search-inp.component';
-import { SearchInpComponent as SearchEtapa } from '../etapas/search-inp/search-inp.component';
+import { SearchInpComponent as SearchEspecieComponent } from '../especies/search-inp/search-inp.component'; // Renamed for clarity
+import { SearchInpComponent as SearchIngredienteComponent } from '../ingredientes/search-inp/search-inp.component'; // Renamed for clarity
+import { SearchInpComponent as SearchEtapaComponent } from '../etapas/search-inp/search-inp.component'; // Renamed for clarity
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import MatProgressSpinnerModule
 
 
-//import { SimplexOptimizer } from '../../formulation/formulation';
 import { EtapasService } from '../../services/etapas-service.service';
 import { EspeciesService } from '../../services/especies-service.service';
 import { IngredientesService } from '../../services/ingredientes-service.service';
@@ -24,7 +24,7 @@ import { EtapaModel } from '../../models/etapa-desarrollo.model';
 import { EspecieModel } from '../../models/especie.model';
 
 import { MatCardModule } from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 
@@ -44,108 +44,168 @@ import { optimizeFormulation } from '../../formulation/formulation';
     ReactiveFormsModule,
     MatChipsModule,
     MatIconModule,
-    SearchEspecie,
-    SearchIngrediente,
-    SearchEtapa,
+    SearchEspecieComponent,
+    SearchIngredienteComponent,
+    SearchEtapaComponent,
     MatButtonModule,
     MatCardModule,
     MatTableModule,
     MatListModule,
     RouterLink,
-    
+    CommonModule, // Add CommonModule here for *ngIf, *ngFor etc.
+    MatProgressSpinnerModule // Add MatProgressSpinnerModule
   ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css',
 })
 export class FormdataComponent implements OnInit {
 
-  displayedColumns: string[] = ['label', 'value'];
+  @ViewChild(SearchEspecieComponent) searchEspecieComponent!: SearchEspecieComponent;
+  // No ViewChild needed for SearchEtapaComponent if we clear through service
+  // No ViewChild needed for SearchIngredienteComponent if we clear through service
 
-  formulario = new FormControl('', [Validators.required]);
   peso: number = 0;
-
-  selectedEtapa: EtapaModel; 
-  selectedEspecie: EspecieModel;
+  selectedEtapa!: EtapaModel | null; // Allow null for reset
+  selectedEspecie!: EspecieModel | null; // Allow null for reset
   selectedIngredientes: IngredienteConPrecio[] = [];
-  
-  
-  
+
+  formulationResult: { solution: Record<string, number>, cost: number } | null = null;
+  formulationError: string | null = null;
+  isLoading: boolean = false;
+
+  // Initial empty states
+  private initialEspecieState: EspecieModel = { id_especie: 0, nombre: '', tipo: '' };
+  private initialEtapaState: EtapaModel = { id_etapa: 0, id_especie: 0, nombre_etapa: '', edad_inicio: 0, edad_fin: 0 };
+
+
   constructor(
     private etapaService: EtapasService,
     private especieService: EspeciesService,
     private ingredienteService: IngredientesService,
     private cdRef: ChangeDetectorRef
   ) {
-    this.selectedEtapa = {
-      id_etapa: 0,
-      id_especie: 0,
-      nombre_etapa: '',
-      edad_inicio: 0,
-      edad_fin: 0,
-    },
-    this.selectedEspecie={
-      id_especie: 0,
-      nombre: '',
-      tipo: ''
-    }
-   };
-
-
-  onChangeValue(event: Event) {
-    this.peso = Number((event.target as HTMLInputElement).value);
-    console.log(this.peso);
+    this.selectedEtapa = { ...this.initialEtapaState };
+    this.selectedEspecie = { ...this.initialEspecieState };
   }
 
   ngOnInit(): void {
-    
     this.setEspecie();
     this.setEtapa();
     this.setIngrediente();
-
   }
 
-  /////////////////////////////Obtencion de Datos de Otros Forms de Seleccion ////////////////////////////////
-  setEtapa(){
-    this.etapaService.etapaSeleccionada$.subscribe((etapa) => { /// Etapa Selccionada
-      if (etapa !== null) {
-        this.selectedEtapa = etapa;
-        console.log('Etapa recibido en right:', this.selectedEtapa);
+  setEtapa() {
+    this.etapaService.etapaSeleccionada$.subscribe((etapa) => {
+      this.selectedEtapa = etapa ? etapa : { ...this.initialEtapaState };
+      // console.log('Etapa recibido:', this.selectedEtapa);
+      this.cdRef.detectChanges();
+    });
+  }
+  setEspecie() {
+    this.especieService.especieSeleccionada$.subscribe((especie) => {
+      this.selectedEspecie = especie ? especie : { ...this.initialEspecieState };
+      // console.log('Especie recibido:', this.selectedEspecie);
+      this.cdRef.detectChanges();
+    });
+  }
+  setIngrediente() {
+    this.ingredienteService.ingredienteSeleccionado$.subscribe((ingredientes) => {
+      this.selectedIngredientes = ingredientes || [];
+      // console.log('Ingredientes recibidos:', this.selectedIngredientes);
+      this.cdRef.detectChanges();
+    });
+  }
+
+  onFormular(): void {
+    this.isLoading = true;
+    this.formulationResult = null;
+    this.formulationError = null;
+
+    if (this.peso <= 0) {
+      this.formulationError = "El peso a formular debe ser mayor que cero.";
+      this.isLoading = false;
+      return;
+    }
+    if (!this.selectedEspecie || this.selectedEspecie.id_especie === 0) {
+      this.formulationError = "Por favor, seleccione una especie.";
+      this.isLoading = false;
+      return;
+    }
+    if (!this.selectedEtapa || this.selectedEtapa.id_etapa === 0) {
+      this.formulationError = "Por favor, seleccione una etapa de desarrollo.";
+      this.isLoading = false;
+      return;
+    }
+    if (this.selectedIngredientes.length === 0) {
+      this.formulationError = "Por favor, seleccione al menos un ingrediente.";
+      this.isLoading = false;
+      return;
+    }
+
+    optimizeFormulation(
+      this.peso,
+      this.selectedEspecie,
+      this.selectedEtapa,
+      this.selectedIngredientes,
+      this.ingredienteService, // Pass the injected service
+      this.etapaService       // Pass the injected service
+    ).subscribe({
+      next: (result) => {
+        if (result.hasOwnProperty('error')) {
+          this.formulationError = (result as { error: string }).error;
+          this.formulationResult = null;
+        } else {
+          this.formulationResult = result as { solution: Record<string, number>, cost: number };
+          this.formulationError = null;
+        }
+        this.isLoading = false;
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error("Error en la formulación:", err);
+        this.formulationError = "Ocurrió un error inesperado durante la formulación. Intente de nuevo.";
+        this.formulationResult = null;
+        this.isLoading = false;
         this.cdRef.detectChanges();
       }
     });
   }
-  setEspecie(){
-    this.especieService.especieSeleccionada$.subscribe((especie) => {  /// Especie Selccionada
-      if (especie !== null) {
-        this.selectedEspecie = especie;
-        console.log('Especie recibido en right:', this.selectedEspecie);
-        this.cdRef.detectChanges();
-      }
-    });
-  }
-  setIngrediente(){
-    this.ingredienteService.ingredienteSeleccionado$.subscribe((ingrediente) => {  /// Especie Selccionada
-      if (ingrediente !== null) {
-        this.selectedIngredientes = ingrediente;
-        console.log('Ingrediente recibido desde service:', this.selectedIngredientes);
-        this.cdRef.detectChanges();
-      }
-    });
-  }
 
-  ////////////////////////////////////Implementacion de Formulation.ts/////////////////////////////////////
+  onLimpiar(): void {
+    this.peso = 0;
+    this.selectedIngredientes = [];
+    this.formulationResult = null;
+    this.formulationError = null;
+    this.isLoading = false;
 
-  
-
-
-  onFormular(): any {
-    if(this.peso > 0 && this.selectedIngredientes.length >= 1 ){
-      optimizeFormulation();
-    }else{
-      console.log("Ingresa un valor valido de Peso/Cantidad Ingrediente a calcular")
+    // Reset selectedEspecie and notify service
+    this.selectedEspecie = { ...this.initialEspecieState };
+    this.especieService.setEspecieSeleccionada(null); // Notify service to clear
+    if (this.searchEspecieComponent) {
+      this.searchEspecieComponent.removeItem(); // Call child's clear method
     }
     
-    
+    // Reset selectedEtapa and notify service
+    this.selectedEtapa = { ...this.initialEtapaState };
+    this.etapaService.setEtapaSeleccionada(null); // Notify service to clear
+
+    // Notify ingrediente service to clear
+    this.ingredienteService.setIngredienteSeleccionado(null); // Or [] if that's how the service handles clear
+
+    // Trigger change detection if needed, though ngModel and service changes should handle it
+    this.cdRef.detectChanges();
   }
 
+  // Helper method to convert solution object to an array for mat-table
+  public getSolutionAsArray(solution: Record<string, number> | undefined | null): { key: string; value: number }[] {
+    if (!solution) {
+      return [];
+    }
+    return Object.entries(solution).map(([key, value]) => ({ key, value }));
+  }
+
+  // Optional: trackBy function for selectedIngredientes list for better performance
+  public trackIngredient(index: number, item: IngredienteConPrecio): number | string {
+    return item.id_ingrediente || item.Nombre_Ingrediente; // Use a unique identifier
+  }
 }
