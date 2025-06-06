@@ -20,6 +20,19 @@ import { RouterLink, RouterLinkActive } from '@angular/router'; // Import Router
   styleUrl: './sidenav.component.css'
 })
 export class SidenavComponent {
+  isExpanded = false; // Sidenav starts collapsed
+
+  mouseEnter() {
+    if (!this.isExpanded) {
+      this.isExpanded = true;
+    }
+  }
+
+  mouseLeave() {
+    if (this.isExpanded) {
+      this.isExpanded = false;
+    }
+  }
 
   // Future: Could add logic here to handle sidenav events or properties
 }

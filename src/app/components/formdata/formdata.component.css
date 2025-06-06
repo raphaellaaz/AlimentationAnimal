@@ -15,18 +15,25 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #ddd;
+  width: 100%; /* Ensure full width */
+  /* max-width: 1200px; Removed to allow full width */
+  margin: 0; /* Removed auto margins, top margin handled by top-bar */
+  padding: 20px; 
+  border-radius: 0; /* No radius if it's edge to edge */
   gap: 20px;
   position: relative;
+
+  background-image: url('/assets/imagenes/atomos.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  min-height: calc(100vh - 10vh); /* Full viewport height minus top-bar height (10vh) */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+/* Comment out or remove conflicting body and ::before rules for atomos.png background */
+/*
 body {
   background-image: url('/assets/imagenes/atomos.png');
   background-size: cover;
@@ -52,6 +59,7 @@ body {
   opacity: 0.1;
   z-index: -1;
 }
+*/
 
 .etapa_especie{
   display: flex;
@@ -65,22 +73,31 @@ body {
   margin-left: 20px;
   flex: 0.2;
 }
+
 .formform{
   flex: 0.5;
+  background-color: rgba(255, 255, 255, 0.75); /* Semi-transparent white background for readability */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .right-side-box {
   flex: 0.5;
-  width: 50%; 
-  padding: 15px;
-  background: #f7f7f7;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  /* width: 50%; Removed fixed width */
+  padding: 25px;
+  background-color: rgba(247, 247, 247, 0.75); /* Semi-transparent light grey background */
+  border-radius: 10px;
+  /* border: 1px solid #ddd; Optional */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
  
-  height: 53vh;
+  /* height: 53vh; Consider removing fixed height or using max-height if scroll is desired */
+  max-height: 80vh; /* Added for consistency if content can grow */
+  overflow-y: auto; /* Added for consistency */
 }
+
 .tags {
   display: inline-block;
     width: 80px; /* Ajusta el ancho */
@@ -92,8 +109,6 @@ body {
   width: 150px; /* Ajusta según necesites */
   text-align: left;
 }
-
-
 
 .small-list {
   max-height: 150px;  /* Ajusta según necesites */
@@ -108,13 +123,6 @@ body {
   font-size: 12px;   /* Tamaño de letra más pequeño */
   padding: 2px 8px;  /* Espaciado más compacto */
 }
-
-
-
-
-
-
-
 
 .top-bar {
   width: 99%;

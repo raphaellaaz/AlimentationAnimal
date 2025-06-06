@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IngredienteModel as Ingrediente } from '../models/ingrediente.model';
-import { environment } from '../../environment';
+import { environment } from '../../environments/environment';
 import { IngredienteConPrecio } from '../interfaces/ingrediente_interfaces';
 
 @Injectable({

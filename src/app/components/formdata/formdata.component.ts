@@ -206,6 +206,6 @@ export class FormdataComponent implements OnInit {
 
   // Optional: trackBy function for selectedIngredientes list for better performance
   public trackIngredient(index: number, item: IngredienteConPrecio): number | string {
-    return item.id_ingrediente || item.Nombre_Ingrediente; // Use a unique identifier
+    return item.id || item.Nombre_Ingrediente; // Changed id_ingrediente to id
   }
 }

@@ -1,5 +1,5 @@
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side" opened="true"> <!-- Default to opened -->
+<mat-drawer-container class="example-container" autosize (mouseenter)="mouseEnter()">
+  <mat-drawer #drawer class="example-sidenav" mode="push" [opened]="isExpanded" (mouseleave)="mouseLeave()">
     <mat-nav-list>
       <a mat-list-item routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
         <mat-icon matListItemIcon>home</mat-icon>
@@ -10,14 +10,25 @@
         <span matListItemTitle>Formulación Avanzada</span>
       </a>
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="/login" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>login</mat-icon>
-        <span matListItemTitle>Iniciar Sesión</span>
-      </a>
-      <a mat-list-item routerLink="/register" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>person_add</mat-icon>
-        <span matListItemTitle>Registrarse</span>
-      </a>
+
+      <div class="dropdown-container">
+        <a mat-list-item class="dropdown-trigger">
+          <mat-icon matListItemIcon>account_circle</mat-icon> <!-- Icono para Usuario/Cuenta -->
+          <span matListItemTitle>Usuario</span>
+          <mat-icon matListItemIcon class="dropdown-arrow">arrow_drop_down</mat-icon>
+        </a>
+        <div class="dropdown-content">
+          <a mat-list-item routerLink="/login" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>login</mat-icon>
+            <span matListItemTitle>Iniciar Sesión</span>
+          </a>
+          <a mat-list-item routerLink="/register" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>person_add</mat-icon>
+            <span matListItemTitle>Registrarse</span>
+          </a>
+        </div>
+      </div>
+
       <!-- Add other common navigation links here if needed -->
     </mat-nav-list>
   </mat-drawer>

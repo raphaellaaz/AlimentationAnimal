@@ -16,18 +16,25 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  width: 100%;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #ddd;
+  width: 100%; /* Ensure full width */
+  /* max-width: 1200px; Removed to allow full width */
+  margin: 0; /* Removed auto margins, top margin handled by top-bar */
+  padding: 20px; 
+  border-radius: 0; /* No radius if it's edge to edge, or keep if you like the top part rounded under the bar */
   gap: 20px;
   position: relative;
+
+  background-image: url('/assets/imagenes/atomos.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  min-height: calc(100vh - 10vh); /* Full viewport height minus top-bar height (10vh) */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+/* Comment out or remove conflicting body and ::before rules for atomos.png background */
+/*
 body {
   background-image: url('/assets/imagenes/atomos.png');
   background-size: cover;
@@ -53,6 +60,7 @@ body {
   opacity: 0.1;
   z-index: -1;
 }
+*/
 
 .etapa_especie{
   display: flex;
@@ -66,23 +74,28 @@ body {
   margin-left: 20px;
   flex: 0.2;
 }
+
 .formform{
   flex: 0.5;
-  /* max-width: 50%; Remove or adjust if it constrains too much */
+  background-color: rgba(255, 255, 255, 0.75); /* Made more transparent */
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .right-side-box {
   flex: 0.5;
-  /* width: 50%;  Let flexbox handle width based on content */
-  padding: 15px;
-  background: #f7f7f7;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  background-color: rgba(247, 247, 247, 0.75); /* Made more transparent */
+  border-radius: 10px;
+  /* border: 1px solid #ddd; Already there, can keep or remove */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  max-height: 80vh; /* Allow more height if needed */
-  overflow-y: auto; /* Add scroll if content exceeds max-height */
+  max-height: 80vh; 
+  overflow-y: auto; 
 }
+
 .tags {
   display: inline-block;
     width: auto; /* Adjust width as needed, or let content define it */

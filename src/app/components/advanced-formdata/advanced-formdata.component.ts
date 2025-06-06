@@ -91,7 +91,7 @@ export class AdvancedFormdataComponent implements OnInit { // Updated class name
     }
   };
   public pieChartLegend = true;
-  public pieChartType: ChartType = 'pie';
+  public pieChartType: 'pie' = 'pie';
 
   // For Bar Chart (Nutrient Analysis - Simulated)
   public barChartLabels: string[] = ['Proteína', 'Grasa', 'Fibra', 'Calcio', 'Fósforo'];
@@ -114,7 +114,7 @@ export class AdvancedFormdataComponent implements OnInit { // Updated class name
     }
   };
   public barChartLegend = true;
-  public barChartType: ChartType = 'bar';
+  public barChartType: 'bar' = 'bar';
 
   private initialEspecieState: EspecieModel = { id_especie: 0, nombre: '', tipo: '' };
   private initialEtapaState: EtapaModel = { id_etapa: 0, id_especie: 0, nombre_etapa: '', edad_inicio: 0, edad_fin: 0 };
@@ -321,6 +321,6 @@ export class AdvancedFormdataComponent implements OnInit { // Updated class name
   }
 
   public trackIngredient(index: number, item: IngredienteConPrecio): number | string {
-    return item.id_ingrediente || item.Nombre_Ingrediente; 
+    return item.id || item.Nombre_Ingrediente;
   }
 }

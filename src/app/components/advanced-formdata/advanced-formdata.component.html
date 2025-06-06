@@ -1,15 +1,5 @@
 <div class="top-bar">
   <img src="/assets/imagenes/LOGOTIPO UNL_Mesa de trabajo 1.png" alt="Logo UNL" class="logo-unl">
-  <div class="button-group">
-    <button mat-stroked-button routerLink="/login">
-      <mat-icon>login</mat-icon>
-      Iniciar Sesión
-    </button>
-    <button mat-stroked-button routerLink="/register">
-      <mat-icon>person_add</mat-icon>
-      Registrarse
-    </button>
-  </div>
 </div>
 
 <form class="form-container">
@@ -113,7 +103,7 @@
       </div>
 
       <!-- Charts Section -->
-      <div class="charts-section" *ngIf="formulationResult && !formulationError && pieChartDatasets.datasets[0]?.data?.length > 0">
+      <div class="charts-section" *ngIf="formulationResult && !formulationError && pieChartDatasets && pieChartDatasets.datasets && pieChartDatasets.datasets.length > 0 && pieChartDatasets.datasets[0] && pieChartDatasets.datasets[0].data && pieChartDatasets.datasets[0].data.length > 0">
         <h2>Datos Estadísticos y Gráficos</h2>
         
         <div class="chart-container">

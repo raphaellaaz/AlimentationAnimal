@@ -354,16 +354,16 @@ export function optimizeFormulation(
   if (!selectedEspecie || !selectedEspecie.id_especie) {
     return of({ error: "Especie not selected or invalid." });
   }
-  if (!selectedEtapa || !selectedEtapa.id_etapa_desarrollo) {
+  if (!selectedEtapa || !selectedEtapa.id_etapa) {
     return of({ error: "Etapa not selected or invalid." });
   }
 
   // 1. Fetch detailed ingredient data
   const ingredientDetailsObservables = selectedIngredientes.map(ing =>
-    ingredientesService.getIngredienteDetailsById(ing.id_ingrediente).pipe(
+    ingredientesService.getIngredienteDetailsById(ing.id).pipe(
       map(details => {
         if (!details || !details.nutrients) {
-          throw new Error(`Nutrient details missing for ingredient ID: ${ing.id_ingrediente}`);
+          throw new Error(`Nutrient details missing for ingredient ID: ${ing.id}`);
         }
         return {
           name: ing.Nombre_Ingrediente,
@@ -395,7 +395,7 @@ export function optimizeFormulation(
       // 2. Fetch nutrient requirements
       return etapasService.getNutrientRequirementsByEspecieAndEtapa(
         selectedEspecie.id_especie!, // Assert non-null as checked above
-        selectedEtapa.id_etapa_desarrollo! // Assert non-null as checked above
+        selectedEtapa.id_etapa! // Changed id_etapa_desarrollo to id_etapa
       ).pipe(
         map((nutrientReqs: NutrientRequirement[]) => {
           // 3. Create the formulation problem

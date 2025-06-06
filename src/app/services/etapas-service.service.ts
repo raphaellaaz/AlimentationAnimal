@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EtapaModel as EtapaDesarrollo } from '../models/etapa-desarrollo.model';
-import { environment } from '../../environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class EtapasService {
   private etapaSeleccionada = new BehaviorSubject<EtapaDesarrollo | null>(null);
   etapaSeleccionada$ = this.etapaSeleccionada.asObservable();
   
-  setEtapaSeleccionada(etapa: EtapaDesarrollo) {
+  setEtapaSeleccionada(etapa: EtapaDesarrollo | null) {
     this.etapaSeleccionada.next(etapa);
   }
 

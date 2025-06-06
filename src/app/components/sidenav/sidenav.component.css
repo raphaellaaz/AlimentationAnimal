@@ -8,3 +8,59 @@
     background: #eee;
   }
   
+.dropdown-container {
+  position: relative; /* Establishes a positioning context for the dropdown content */
+}
+
+.dropdown-trigger {
+  display: flex; /* Align icon and text */
+  align-items: center; /* Vertically center items */
+  justify-content: space-between; /* Push arrow to the right */
+}
+
+.dropdown-content {
+  display: none; /* Hidden by default */
+  position: absolute; /* Position relative to the container */
+  left: 0; /* Align with the left edge of the container */
+  top: 100%; /* Position it right below the trigger item */
+  background-color: #f9f9f9; /* Background for the dropdown */
+  min-width: 200px; /* Adjust as needed */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100; /* Ensure it's above other content */
+  padding-left: 16px; /* Indent sub-items slightly */
+}
+
+/* Show the dropdown menu on hover */
+.dropdown-container:hover .dropdown-content {
+  display: block;
+}
+
+/* Optional: Style for the dropdown arrow to rotate on hover/open */
+.dropdown-container:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease-in-out; /* Smooth transition for the arrow */
+  margin-left: auto; /* Pushes arrow to the far right of the item */
+}
+
+/* Adjust styling for mat-list-item within dropdown if needed */
+.dropdown-content a.mat-list-item {
+  /* Example: Adjust padding or height if they look too large for a submenu */
+  height: 40px; /* Default is often 48px */
+}
+
+.dropdown-content a.mat-list-item .mat-icon {
+  margin-right: 8px; /* Space between icon and text in dropdown */
+}
+
+.example-sidenav {
+  /* You might have other styles like width here */
+  /* Override the transition duration for a faster animation */
+  transition-duration: 0.15s !important; /* Shorter duration */
+  /* Angular Material might use specific properties for transition, common ones are transform and visibility */
+  /* We can be more specific if the above doesn't work, e.g.: */
+  /* transition: transform 0.15s ease-out !important, visibility 0.15s ease-out !important; */
+}
+  
