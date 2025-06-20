@@ -19,7 +19,7 @@
       </app-searchetapa-inp>
     </div>
 
-    <app-searchingrediente-inp>
+    <app-searchingrediente-inp (selectionChange)="onIngredientesSelectionChange($event)">
       <mat-icon matPrefix>inventory_2</mat-icon>
     </app-searchingrediente-inp>
 

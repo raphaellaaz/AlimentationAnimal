@@ -3,7 +3,12 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #cacaca;
+    background-color: #f5f5f5;
+    position: relative;
+    background-image: url('../../../../assets/imagenes/atomos.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   
   .forgot-password-card {
@@ -12,9 +17,24 @@
     text-align: center;
   }
   
+  .logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+  
   .logo {
-    width: 80px;
-    margin-bottom: 10px;
+    width: 250px;
+  }
+  
+  .bottom-right-logo-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .bottom-right-logo {
+    width: 200px;
   }
   
   .title {
@@ -29,14 +49,14 @@
     margin-top: 10px;
   }
   
-  mat-form-field {
+  .mat-form-field {
     display: flex;
     align-items: center;
   }
   
   mat-icon {
     margin-right: 5px;
-    color: #1976d2;
+    color: #79ccac;
   }
   
   button mat-icon {
@@ -49,7 +69,7 @@
   }
   
   .login-link {
-    color: #1976d2;
+    color: #4093ff;
     text-decoration: none;
     font-weight: bold;
   }

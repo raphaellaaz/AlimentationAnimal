@@ -1,0 +1,25 @@
+.price-form {
+  margin-top: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-title-container h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.ingredient-name-subtitle {
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin: 4px 0 0;
+  color: #666;
+}

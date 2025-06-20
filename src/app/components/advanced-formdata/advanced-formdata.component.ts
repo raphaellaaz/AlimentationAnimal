@@ -1,9 +1,9 @@
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, Validators } from '@angular/forms';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { isEmpty, map, startWith } from 'rxjs/operators';
 import { AsyncPipe, CommonModule } from '@angular/common'; // Import CommonModule
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -63,7 +63,7 @@ import { optimizeFormulation } from '../../formulation/formulation';
   templateUrl: './advanced-formdata.component.html',
   styleUrl: './advanced-formdata.component.css', // Updated styleUrl
 })
-export class AdvancedFormdataComponent implements OnInit { // Updated class name
+export class AdvancedFormdataComponent implements OnInit, OnDestroy { // Updated class name
 
   @ViewChild(SearchEspecieComponent) searchEspecieComponent!: SearchEspecieComponent;
   
@@ -119,6 +119,7 @@ export class AdvancedFormdataComponent implements OnInit { // Updated class name
   private initialEspecieState: EspecieModel = { id_especie: 0, nombre: '', tipo: '' };
   private initialEtapaState: EtapaModel = { id_etapa: 0, id_especie: 0, nombre_etapa: '', edad_inicio: 0, edad_fin: 0 };
 
+  private subscriptions = new Subscription();
 
   constructor(
     private etapaService: EtapasService,
@@ -322,5 +323,13 @@ export class AdvancedFormdataComponent implements OnInit { // Updated class name
 
   public trackIngredient(index: number, item: IngredienteConPrecio): number | string {
     return item.id || item.Nombre_Ingrediente;
+  }
+
+  onIngredientesSelectionChange(ingredientes: IngredienteConPrecio[]) {
+    this.selectedIngredientes = ingredientes;
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

@@ -19,7 +19,7 @@
   /* max-width: 1200px; Removed to allow full width */
   margin: 0; /* Removed auto margins, top margin handled by top-bar */
   padding: 20px; 
-  border-radius: 0; /* No radius if it's edge to edge */
+  border-radius: 0; /* No radius if it's edge to edge, or keep if you like the top part rounded under the bar */
   gap: 20px;
   position: relative;
 
@@ -76,7 +76,7 @@ body {
 
 .formform{
   flex: 0.5;
-  background-color: rgba(255, 255, 255, 0.75); /* Semi-transparent white background for readability */
+  background-color: rgba(255, 255, 255, 0.75); /* Made more transparent */
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -84,35 +84,34 @@ body {
 
 .right-side-box {
   flex: 0.5;
-  /* width: 50%; Removed fixed width */
   padding: 25px;
-  background-color: rgba(247, 247, 247, 0.75); /* Semi-transparent light grey background */
+  background-color: rgba(247, 247, 247, 0.75); /* Made more transparent */
   border-radius: 10px;
-  /* border: 1px solid #ddd; Optional */
+  /* border: 1px solid #ddd; Already there, can keep or remove */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
- 
-  /* height: 53vh; Consider removing fixed height or using max-height if scroll is desired */
-  max-height: 80vh; /* Added for consistency if content can grow */
-  overflow-y: auto; /* Added for consistency */
+  max-height: 80vh; 
+  overflow-y: auto; 
 }
 
 .tags {
   display: inline-block;
-    width: 80px; /* Ajusta el ancho */
+    width: auto; /* Adjust width as needed, or let content define it */
+    padding-right: 5px; /* Add some spacing */
     text-align: left;
+    font-weight: bold;
 }
 
 .tags-value {
   display: inline-block;
-  width: 150px; /* Ajusta según necesites */
+  /* width: 150px; Let content define width */
   text-align: left;
 }
 
 .small-list {
-  max-height: 150px;  /* Ajusta según necesites */
-  overflow-y: auto;   /* Permite scroll si hay muchos elementos */
+  max-height: 150px;  
+  overflow-y: auto;   
   background: #f9f9f9;
   border-radius: 5px;
   padding: 5px;
@@ -120,8 +119,8 @@ body {
 }
 
 .small-item {
-  font-size: 12px;   /* Tamaño de letra más pequeño */
-  padding: 2px 8px;  /* Espaciado más compacto */
+  font-size: 12px;   
+  padding: 2px 8px;  
 }
 
 .top-bar {
@@ -181,6 +180,7 @@ body {
   display: flex;
   justify-content: flex-start;
   gap: 30px;
+  margin-top: 20px; /* Added some top margin */
 }
 
 .button-group button {
@@ -191,9 +191,10 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 2px solid;
+  /* border: 2px solid; Removed default border, rely on mat-button styles */
 }
 
+/*
 .button-group button[color="primary"] {
   border-color: #3f51b5;
 }
@@ -201,6 +202,7 @@ body {
 .button-group button[color="warn"] {
   border-color: #403dd4;
 }
+*/
 
 .button-group button:hover {
   opacity: 0.9;
@@ -235,4 +237,119 @@ app-searchingrediente-inp mat-icon {
   opacity: 0.9;
   z-index: 9999;
   pointer-events: none;
+}
+
+/* Styles for loading and error messages */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  gap: 10px;
+  color: #3f51b5; /* Primary color */
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 4px;
+  background-color: #f8d7da; /* Light red for errors */
+  color: #721c24; /* Dark red for text */
+}
+
+.error-message mat-icon {
+  margin-right: 8px;
+}
+
+.results-error { /* Specific for errors next to results */
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Updated styles for summary and results cards to match Advanced form */
+.summary-card, .results-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px; /* Space between cards */
+}
+
+.summary-card h3, .results-card h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 18px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+.summary-card h4, .results-card h4 {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 16px;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 8px 0;
+}
+
+.ingredients-section h4 {
+  margin-bottom: 8px;
+}
+
+.result-table {
+  width: 100%;
+  margin: 15px 0;
+}
+
+/* Container for results and charts for alignment */
+.results-and-charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Container for just the formulation results if charts are not shown */
+.formulation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Styles for the charts section */
+.charts-section {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.charts-section h2 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+.charts-section p {
+  text-align: center;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* Individual chart container for sizing and spacing */
+.chart-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }

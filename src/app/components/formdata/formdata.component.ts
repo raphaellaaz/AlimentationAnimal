@@ -97,23 +97,27 @@ export class FormdataComponent implements OnInit {
   setEtapa() {
     this.etapaService.etapaSeleccionada$.subscribe((etapa) => {
       this.selectedEtapa = etapa ? etapa : { ...this.initialEtapaState };
-      // console.log('Etapa recibido:', this.selectedEtapa);
+      console.log('Etapa seleccionada:', this.selectedEtapa);
       this.cdRef.detectChanges();
     });
   }
   setEspecie() {
     this.especieService.especieSeleccionada$.subscribe((especie) => {
       this.selectedEspecie = especie ? especie : { ...this.initialEspecieState };
-      // console.log('Especie recibido:', this.selectedEspecie);
+      console.log('Especie recibido:', this.selectedEspecie);
       this.cdRef.detectChanges();
     });
   }
   setIngrediente() {
     this.ingredienteService.ingredienteSeleccionado$.subscribe((ingredientes) => {
       this.selectedIngredientes = ingredientes || [];
-      // console.log('Ingredientes recibidos:', this.selectedIngredientes);
+      console.log('Ingredientes seleccionados:', this.selectedIngredientes);
       this.cdRef.detectChanges();
     });
+  }
+
+  onIngredientesSelectionChange(ingredientes: IngredienteConPrecio[]) {
+    this.selectedIngredientes = ingredientes;
   }
 
   onFormular(): void {

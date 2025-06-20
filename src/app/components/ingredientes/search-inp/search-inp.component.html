@@ -12,39 +12,15 @@
         <mat-option [value]="option">{{option.Nombre_Ingrediente}}</mat-option>
       }
     </mat-autocomplete>
-
-    <div class="selected-items">
-      @for (item of ingredientesConPrecio; track $index) {
-        <mat-chip [removable]="true" (removed)="removeItem(item)">
-          {{ item.Nombre_Ingrediente }}
-          <mat-icon matChipRemove>close</mat-icon>
-        </mat-chip>
-      }
-    </div>
   </mat-form-field>
 
-  
-  <div>
-    <mat-list #ingrediente>
-      @for (ingrediente of ingredientesConPrecio; track ingrediente) {
-        <mat-card appearance="outlined">
-          <mat-card-content class="list_card">
 
-            <mat-checkbox (change)="removeItem(ingrediente)" class="example-margin" [checked]="true"></mat-checkbox>
-            
-            <mat-list-item class="list_ingrediente"  >
-              {{ingrediente.Nombre_Ingrediente}}
-
-              <span>Precio: {{ingrediente.precio}} $/Kg</span>
-              
-            </mat-list-item>
-
-
-          </mat-card-content>
-        </mat-card>
- 
-      }
-    
-    </mat-list>
-  </div>
+<div class="chip-list-container">
+  @for (item of ingredientesConPrecio; track $index) {
+    <mat-chip [removable]="true" (removed)="removeItem(item)">
+      {{ item.Nombre_Ingrediente }}
+      <mat-icon matChipRemove>close</mat-icon>
+    </mat-chip>
+  }
+</div>
 

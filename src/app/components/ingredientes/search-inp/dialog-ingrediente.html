@@ -1,12 +1,27 @@
-<h2 mat-dialog-title>Precio Ingrediente</h2>
-<mat-dialog-content>
-  <form [formGroup]="form">
-    <label for="ingredienteInput">Ingrediente:</label>
-    <input id="ingredienteInput" type="number" [formControl]="ingredienteControl" min="0">
+<div mat-dialog-title class="dialog-title-container">
+  <h2>Establecer Precio</h2>
+  <p class="ingredient-name-subtitle">{{ data.ingrediente.Nombre_Ingrediente }}</p>
+</div>
 
+<mat-dialog-content class="mat-typography">
+  <p>Por favor, ingrese el precio por kilogramo ($/Kg) para el ingrediente seleccionado.</p>
+  <form [formGroup]="form" class="price-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" formControlName="precio" placeholder="0.00" min="0">
+      <span matTextPrefix>$&nbsp;</span>
+      <span matTextSuffix>/Kg</span>
+      <mat-error *ngIf="form.controls['precio'].hasError('required')">
+        El precio es requerido.
+      </mat-error>
+      <mat-error *ngIf="form.controls['precio'].hasError('min')">
+        El precio no puede ser negativo.
+      </mat-error>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close (click)="closeDialog()">Cancelar</button>
-  <button mat-button (click)="onPriceInput($event)">Listo</button>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="form.value.precio" [disabled]="!form.valid">Guardar</button>
 </mat-dialog-actions>

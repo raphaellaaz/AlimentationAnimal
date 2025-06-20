@@ -18,3 +18,29 @@
 
   }
   
+.ingredient-card {
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.ingredient-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.ingredient-name {
+  font-weight: 500;
+}
+
+.remove-button {
+  margin-left: 16px;
+}
+
+.chip-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+  

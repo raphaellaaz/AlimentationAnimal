@@ -1,8 +1,8 @@
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
-import { Component, inject, model, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, model, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe, CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { IngredienteModel } from '../../../models/ingrediente.model';
 
@@ -22,23 +23,24 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-searchingrediente-inp',
+  standalone: true,
   imports: [
-    MatCheckboxModule,
-    MatCardModule,
+    CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    ReactiveFormsModule,
-    AsyncPipe,
     MatChipsModule,
     MatIconModule,
-    MatListModule,
+    MatDialogModule,
   ],
   templateUrl: './search-inp.component.html',
   styleUrl: './search-inp.component.css',
 })
 export class SearchInpComponent implements OnInit {
+  @Output() selectionChange = new EventEmitter<IngredienteConPrecio[]>();
+
   myControl = new FormControl('');
 
   optionsIngredientes: IngredienteModel[] = []; //api data from endpoint
@@ -51,6 +53,12 @@ export class SearchInpComponent implements OnInit {
   constructor(private ingredienteService: IngredientesService) {}
 
   ngOnInit() {
+    this.ingredienteService.ingredienteSeleccionado$.subscribe(ingredientes => {
+      if (ingredientes === null) {
+        this.ingredientesConPrecio = [];
+      }
+    });
+
     this.ingredienteService.getAllIngredientes().subscribe((data) => {
       this.optionsIngredientes = data.map(
         (ingredientes: IngredienteModel) => ingredientes
@@ -240,6 +248,7 @@ export class SearchInpComponent implements OnInit {
           
           //this.selectedIngredientes = result; // Si quieres guardar solo la seleccionada
           this.ingredienteService.setIngredienteSeleccionado(this.ingredientesConPrecio); /// pasar model con precio en dialog
+          this.selectionChange.emit(this.ingredientesConPrecio);
         }
       });
     }
@@ -255,43 +264,42 @@ export class SearchInpComponent implements OnInit {
   }
 
   onShowInputPrice(event: any) {
-    this.openDialog();  
+    this.selectedIngrediente = event.option.value;
 
-    const selectedValue = event.option.value;
-    console.log(selectedValue);
+    this.openDialog();
 
-    this.selectedIngrediente = selectedValue;
-
-
-    this.myControl.setValue(''); // Limpiar el input después de seleccionar
-    console.log(this.selectedIngrediente);
+    this.myControl.setValue('');
   }
 
   removeItem(item: IngredienteConPrecio) {
-    this.ingredientesConPrecio = this.ingredientesConPrecio.filter(
-      (option) => option.Nombre_Ingrediente !== item.Nombre_Ingrediente
+    const index = this.ingredientesConPrecio.findIndex(
+      (ingrediente) => ingrediente.id === item.id
     );
+
+    if (index !== -1) {
+      this.ingredientesConPrecio.splice(index, 1);
+      this.ingredienteService.setIngredienteSeleccionado(this.ingredientesConPrecio);
+      this.selectionChange.emit(this.ingredientesConPrecio);
+    }
   }
 }
 
 @Component({
-  selector: 'dialog-ingrediente',
+  selector: 'dialog-ingrediente-precio',
   templateUrl: 'dialog-ingrediente.html',
-  styleUrl: './dialog-ingrediente.css',
+  styleUrl: 'dialog-ingrediente.css',
+  standalone: true,
   imports: [
     MatDialogTitle,
     MatDialogContent,
-    MatListModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDialogTitle,
-    MatDialogContent,
     MatDialogActions,
-    MatListModule,
+    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    CommonModule
   ],
 })
 export class DialogIngrediente implements OnInit {
@@ -305,19 +313,13 @@ export class DialogIngrediente implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      etapa: this.ingredienteControl,
+      precio: [null, [Validators.required, Validators.min(0)]],
     });
   }
 
   ngOnInit() {
-    // Acceder correctamente a los datos pasados
-    this.optionsIngredientePrecio = this.data.data;
-    console.log('Opciones de Ingrediente en dialog:', this.optionsIngredientePrecio);
-  }
-
-  onPriceInput(etapa: any) {
-    const selectedValue = this.ingredienteControl.value;
-    this.dialogRef.close(selectedValue);
+    this.ingredienteControl.setValue(this.data.ingrediente);
+    console.log(this.data);
   }
 
   closeDialog() {
