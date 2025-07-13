@@ -2,23 +2,34 @@ import { IngredienteModel } from "../models/ingrediente.model";
 
 export interface IngredienteConPrecio extends IngredienteModel {
   precio: number;
-  peso: number;
+  //peso: number;
 
     // Nutrientes
-    nutrientes: Record<string, number>; //añadido a la funcion de formulation
+    NUTRIENTES: Record<string, number>; //añadido a la funcion de formulation
   
     // Energía
-    energia: Record<string, number>;  //no añadido a la funcion de formulation
+    ENERGIA: Record<string, number>;  //no añadido a la funcion de formulation
   
     // Digestibilidad
-    digestibilidad: Record<string, number>; //no añadido a la funcion de formulation
+    DIGESTIBILIDAD: Record<string, number>; //no añadido a la funcion de formulation
 
-    otros: Record<string, number>
+    MISC: Record<string, number>
     // Otros campos opcionales
   }
   
 
+interface Restricion{
+  min: number;
+  max: number;
+  keys?: string[];
+}
 
+
+export interface Restricciones{
+  PROTEINA: Restricion
+  ENERGIA: Restricion
+  FIBRA: Restricion
+}
 
 
   // Nutrientes principales

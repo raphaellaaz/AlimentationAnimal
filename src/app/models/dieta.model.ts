@@ -1,8 +1,11 @@
 export interface DietaModel {
     id_dieta: number;
     id_etapa: number;
-    porcentaje_proteina?: number;
-    porcentaje_energia?: number;
-    porcentaje_fibra?: number;
+    proteina_min: number,
+    proteina_max: number,
+    energia_min: number,
+    energia_max: number,
+    fibra_min: number,
+    fibra_max: number
     suplementos?: string;
 }

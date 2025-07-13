@@ -28,9 +28,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 
-import { IngredienteConPrecio } from '../../interfaces/ingrediente_interfaces';
+import { IngredienteConPrecio, Restricciones } from '../../interfaces/ingrediente_interfaces';
 
-import { optimizeFormulation } from '../../formulation/formulation';
+//import { optimizeFormulation } from '../../formulation/formulation';
+import { FormulationpyService } from '../../services/formulationpy.service';
+import { DietasService } from '../../services/dietas.service';
+import { DietaModel } from '../../models/dieta.model';
 
 
 @Component({
@@ -51,7 +54,6 @@ import { optimizeFormulation } from '../../formulation/formulation';
     MatCardModule,
     MatTableModule,
     MatListModule,
-    RouterLink,
     CommonModule, // Add CommonModule here for *ngIf, *ngFor etc.
     MatProgressSpinnerModule // Add MatProgressSpinnerModule
   ],
@@ -68,6 +70,7 @@ export class FormdataComponent implements OnInit {
   selectedEtapa!: EtapaModel | null; // Allow null for reset
   selectedEspecie!: EspecieModel | null; // Allow null for reset
   selectedIngredientes: IngredienteConPrecio[] = [];
+  selectedDieta!: Restricciones | null;
 
   formulationResult: { solution: Record<string, number>, cost: number } | null = null;
   formulationError: string | null = null;
@@ -82,6 +85,8 @@ export class FormdataComponent implements OnInit {
     private etapaService: EtapasService,
     private especieService: EspeciesService,
     private ingredienteService: IngredientesService,
+    private formulation: FormulationpyService,
+    private dietaService: DietasService,
     private cdRef: ChangeDetectorRef
   ) {
     this.selectedEtapa = { ...this.initialEtapaState };
@@ -92,6 +97,7 @@ export class FormdataComponent implements OnInit {
     this.setEspecie();
     this.setEtapa();
     this.setIngrediente();
+    this.setRestricciones();
   }
 
   setEtapa() {
@@ -101,6 +107,44 @@ export class FormdataComponent implements OnInit {
       this.cdRef.detectChanges();
     });
   }
+
+  setRestricciones() {
+    this.dietaService.etapaSeleccionada$.subscribe({
+      next: (dieta) => {
+        if (!dieta) {
+          this.selectedDieta = null;
+          return;
+        }
+        
+        this.selectedDieta = { //posteriormente para advance que pueda especificar valores netos
+          PROTEINA: {
+            min:  8,
+            max:  Number.MAX_SAFE_INTEGER,
+            keys: ["PB____"],
+          },
+          ENERGIA: {
+            min: 1500,
+            max: Number.MAX_SAFE_INTEGER,
+            keys: ["EM_RTES_Kcal_kg", "ENL_RTES_Kcal_kg"],
+          },
+          FIBRA: {
+            min:  0,
+            max:  15, //Number.MAX_SAFE_INTEGER,
+            keys: ["FB____", "FND____"],
+          }
+        };
+  
+        console.log('Restricciones cargadas:', this.selectedDieta);
+  
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al recibir la dieta seleccionada:', err);
+        this.selectedDieta = null;
+      }
+    });
+  }
+  
   setEspecie() {
     this.especieService.especieSeleccionada$.subscribe((especie) => {
       this.selectedEspecie = especie ? especie : { ...this.initialEspecieState };
@@ -146,14 +190,15 @@ export class FormdataComponent implements OnInit {
       return;
     }
 
-    optimizeFormulation(
-      this.peso,
-      this.selectedEspecie,
-      this.selectedEtapa,
+    
+
+    this.formulation.createCalc(
       this.selectedIngredientes,
-      this.ingredienteService, // Pass the injected service
-      this.etapaService       // Pass the injected service
-    ).subscribe({
+      this.peso,
+      this.selectedDieta,
+      
+      
+      ).subscribe({
       next: (result) => {
         if (result.hasOwnProperty('error')) {
           this.formulationError = (result as { error: string }).error;
@@ -200,7 +245,7 @@ export class FormdataComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
-  // Helper method to convert solution object to an array for mat-table
+  // Helper method to convert solution object to an array for mat-table // Obtiene los resultados en un array para convertirlos en una tabla para mostrarlos
   public getSolutionAsArray(solution: Record<string, number> | undefined | null): { key: string; value: number }[] {
     if (!solution) {
       return [];

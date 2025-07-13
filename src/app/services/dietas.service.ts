@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { DietaModel } from '../models/dieta.model'; // Importación correcta
-import { environment } from '../../environment';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DietasService {
 
-  private apiUrl = `${environment.API_URL}/dieta`; // URL de la API
+  private apiUrl = `${environment.API_URL}dieta`; // URL de la API
 
   constructor(private http: HttpClient) { }
+
+  private dietaSeleccionada = new BehaviorSubject<DietaModel | null>(null);
+  etapaSeleccionada$ = this.dietaSeleccionada.asObservable();
+    
+  setDietaSeleccionada(dieta: DietaModel | null) {
+    this.dietaSeleccionada.next(dieta);
+  }
 
   // Obtener todas las dietas
   getAllDietas(): Observable<DietaModel[]> {

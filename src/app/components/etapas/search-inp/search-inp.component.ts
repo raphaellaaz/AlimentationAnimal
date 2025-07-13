@@ -25,9 +25,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { EtapasService } from '../../../services/etapas-service.service';
 import { EspeciesService } from '../../../services/especies-service.service';
+import { DietasService } from '../../../services/dietas.service';
 
 import { EtapaModel } from '../../../models/etapa-desarrollo.model';
 import { EspecieModel } from '../../../models/especie.model';
+import { DietaModel } from '../../../models/dieta.model';
 
 @Component({
   selector: 'app-searchetapa-inp',
@@ -52,12 +54,15 @@ export class SearchInpComponent implements OnInit {
   // Lista de seleccionados
   selectedEtapas: EtapaModel;
   especieSelected!: EspecieModel;
+  dietasall!: DietaModel[];
+  dietaSelected!: DietaModel;
 
   readonly disabled = model(true);
 
   constructor(
     private apiEtapas: EtapasService,
-    private especieService: EspeciesService
+    private especieService: EspeciesService,
+    private dietaservice: DietasService,
   ) {
     this.selectedEtapas = {
       id_etapa: 0,
@@ -78,6 +83,15 @@ export class SearchInpComponent implements OnInit {
         edad_fin: etapas.edad_fin,
         descripcion: etapas.descripcion,
       }));
+      this.dietaservice.getAllDietas().subscribe({
+        next: (data) => {
+          this.dietasall = data;
+          console.log(this.dietasall)
+        },
+        error: (err) => {
+          console.error('Error al obtener las dietas:', err);
+        }
+      })
       console.log(this.allEtapas);
     });
 
@@ -112,7 +126,22 @@ export class SearchInpComponent implements OnInit {
         console.log('Etapa seleccionada desde diálogo:', result);
         // Aquí puedes guardar la etapa seleccionada en tu componente principal
         this.selectedEtapas = result; // Si quieres guardar solo la seleccionada
+        this.dietaSelected = this.dietasall.find(
+          (dietas: DietaModel) => dietas.id_etapa === this.selectedEtapas.id_etapa
+        )?? {
+          id_dieta: 0,
+          id_etapa: 0,
+          proteina_max: 0,
+          proteina_min: 0,
+          energia_min: 0,
+          energia_max: 0,
+          fibra_min: 0,
+          fibra_max: 0,
+          suplementos: 'No ha habido dieta para la etapa seleccionada'
+        };
+        console.log(this.dietaSelected)
         this.apiEtapas.setEtapaSeleccionada(this.selectedEtapas)
+        this.dietaservice.setDietaSeleccionada(this.dietaSelected)
       }
     });
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environment';
-import { IngredienteConPrecio, Restricciones, MinMax} from '../interfaces/ingrediente_interfaces';
+import { environment } from '../../environments/environment.development';
+import { IngredienteConPrecio, Restricciones} from '../interfaces/ingrediente_interfaces';
 import { MetodosCalculate } from '../interfaces/metodos.interface';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -18,18 +18,17 @@ export class FormulationpyService {
     createCalc(
       ingredientesconprecio: IngredienteConPrecio[],
       peso_total: number,
+      restricciones: Restricciones | null,
       metodo?: MetodosCalculate,
-      restricciones?: Restricciones,
-      minmax?: MinMax
+      
     ): Observable<any> {
       const payload = {
         ingredientesconprecio,
         peso_total,
-        metodo,
         restricciones,
-        minmax
+        metodo,
       };
-    
+      console.log(restricciones);
       return this.http.post<any>(this.apiUrl, payload);
     }
     

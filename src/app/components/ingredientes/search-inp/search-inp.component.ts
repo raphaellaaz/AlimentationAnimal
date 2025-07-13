@@ -97,17 +97,16 @@ export class SearchInpComponent implements OnInit {
           } else {
 
             console.log("Dentrod e Else", this.selectedIngrediente.PB____);
-            // Si no existe, agregarlo
             this.ingredientesConPrecio.push({
               id: this.selectedIngrediente.id,
               Nombre_Ingrediente: this.selectedIngrediente.Nombre_Ingrediente, // Copia todas las propiedades de IngredienteModel
               precio: parseFloat(result), // Agrega el campo precio
-              peso: 1, // Asignar un valor predeterminado si falta
+              //peso: 1, // Asignar un valor predeterminado si falta
 
 
               // Transferir nutrientes
-              nutrientes: {
-                PB____: this.selectedIngrediente.PB____ || 0,
+              NUTRIENTES: {
+                PB____: this.selectedIngrediente.PB____ || 0, //PROTEINA BRUTA
                 EE____: this.selectedIngrediente.EE____ || 0,
                 EE_VERD____: this.selectedIngrediente.EE_VERD____ || 0,
                 FB____: this.selectedIngrediente.FB____ || 0,
@@ -143,7 +142,11 @@ export class SearchInpComponent implements OnInit {
                 Vit__E_ppm: this.selectedIngrediente.Vit__E_ppm || 0,
                 Biotina_ppm: this.selectedIngrediente.Biotina_ppm || 0,
                 Colina_ppm: this.selectedIngrediente.Colina_ppm || 0,
-                EM_RTES_Kcal_kg: this.selectedIngrediente.EM_RTES_Kcal_kg || 0,
+              },
+
+              ENERGIA: {
+
+                EM_RTES_Kcal_kg: this.selectedIngrediente.EM_RTES_Kcal_kg || 0, // Transferir energía
                 UFL_UF_kg: this.selectedIngrediente.UFL_UF_kg || 0,
                 UFC_UF_kg: this.selectedIngrediente.UFC_UF_kg || 0,
                 ENL_RTES_Kcal_kg: this.selectedIngrediente.ENL_RTES_Kcal_kg || 0,
@@ -159,7 +162,9 @@ export class SearchInpComponent implements OnInit {
                 EMA_AVES_Kcal_kg: this.selectedIngrediente.EMA_AVES_Kcal_kg || 0,
                 ED_CONEJOS_Kcal_kg: this.selectedIngrediente.ED_CONEJOS_Kcal_kg || 0,
                 ED_CABALLO_Kcal_kg: this.selectedIngrediente.ED_CABALLO_Kcal_kg || 0,
-                PBDIG_RUM____: this.selectedIngrediente.PBDIG_RUM____ || 0,
+              },
+              DIGESTIBILIDAD:{
+                PBDIG_RUM____: this.selectedIngrediente.PBDIG_RUM____ || 0, // Transferir digestibilidad
                 PBDIG_PORC____: this.selectedIngrediente.PBDIG_PORC____ || 0,
                 PBDIG_AVES____: this.selectedIngrediente.PBDIG_AVES____ || 0,
                 PBDIG_CON____: this.selectedIngrediente.PBDIG_CON____ || 0,
@@ -206,35 +211,7 @@ export class SearchInpComponent implements OnInit {
                 ARG_DR____: this.selectedIngrediente.ARG_DR____ || 0,
                 GLYeq_DR____: this.selectedIngrediente.GLYeq_DR____ || 0,
               },
-
-              // Transferir energía
-              energia: {
-                EM_RTES_Kcal_kg: this.selectedIngrediente.EM_RTES_Kcal_kg || 0,
-                UFL_UF_kg: this.selectedIngrediente.UFL_UF_kg || 0,
-                UFC_UF_kg: this.selectedIngrediente.UFC_UF_kg || 0,
-                ENL_RTES_Kcal_kg: this.selectedIngrediente.ENL_RTES_Kcal_kg || 0,
-                ENM_RTES_Kcal_kg: this.selectedIngrediente.ENM_RTES_Kcal_kg || 0,
-                ENC_RTES_Kcal_kg: this.selectedIngrediente.ENC_RTES_Kcal_kg || 0,
-                ALM_SOLUBLE____: this.selectedIngrediente.ALM_SOLUBLE____ || 0,
-                ALM_DEGRAD____: this.selectedIngrediente.ALM_DEGRAD_____ || 0,
-              },
-
-              // Transferir digestibilidad
-              digestibilidad: {
-                PBDIG_RUM____: this.selectedIngrediente.PBDIG_RUM____ || 0,
-                PBDIG_PORC____: this.selectedIngrediente.PBDIG_PORC____ || 0,
-                PBDIG_AVES____: this.selectedIngrediente.PBDIG_AVES____ || 0,
-                PBDIG_CON____: this.selectedIngrediente.PBDIG_CON____ || 0,
-                PBDIG_CAB____: this.selectedIngrediente.PBDIG_CAB____ || 0,
-                PDIA____: this.selectedIngrediente.PDIA____ || 0,
-                PDIE____: this.selectedIngrediente.PDIE____ || 0,
-                PDIN____: this.selectedIngrediente.PDIN____ || 0,
-                LYS___PDIE_: this.selectedIngrediente.LYS___PDIE_ || 0,
-                MET___PDIE_: this.selectedIngrediente.MET___PDIE_ || 0,
-              },
-
-              // Transferir energía
-              otros: {
+              MISC:{
                 HUMEDAD____: this.selectedIngrediente.HUMEDAD____ || 0,
                 CENIZAS____: this.selectedIngrediente.CENIZAS____ || 0,
               },

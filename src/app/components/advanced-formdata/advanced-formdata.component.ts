@@ -31,7 +31,8 @@ import { RouterLink } from '@angular/router';
 
 import { IngredienteConPrecio } from '../../interfaces/ingrediente_interfaces';
 
-import { optimizeFormulation } from '../../formulation/formulation';
+//import { optimizeFormulation } from '../../formulation/formulation';
+import { FormulationpyService } from '../../services/formulationpy.service';
 
 
 @Component({
@@ -56,7 +57,6 @@ import { optimizeFormulation } from '../../formulation/formulation';
     MatCardModule,
     MatTableModule,
     MatListModule,
-    RouterLink,
     CommonModule,
     MatProgressSpinnerModule
   ],
@@ -125,7 +125,8 @@ export class AdvancedFormdataComponent implements OnInit, OnDestroy { // Updated
     private etapaService: EtapasService,
     private especieService: EspeciesService,
     private ingredienteService: IngredientesService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private formulation: FormulationpyService,
   ) {
     this.selectedEtapa = { ...this.initialEtapaState };
     this.selectedEspecie = { ...this.initialEspecieState };
@@ -182,23 +183,20 @@ export class AdvancedFormdataComponent implements OnInit, OnDestroy { // Updated
       return;
     }
 
-    optimizeFormulation(
-      this.peso,
-      this.selectedEspecie,
-      this.selectedEtapa,
+    this.formulation.createCalc(
       this.selectedIngredientes,
-      this.ingredienteService, 
-      this.etapaService       
-    ).subscribe({
+      this.peso,
+      null
+      
+      
+      ).subscribe({
       next: (result) => {
         if (result.hasOwnProperty('error')) {
           this.formulationError = (result as { error: string }).error;
           this.formulationResult = null;
-          this.clearChartData(); // Clear charts on error
         } else {
           this.formulationResult = result as { solution: Record<string, number>, cost: number };
           this.formulationError = null;
-          this.updateCharts(); // Update charts with new data
         }
         this.isLoading = false;
         this.cdRef.detectChanges();
@@ -207,7 +205,6 @@ export class AdvancedFormdataComponent implements OnInit, OnDestroy { // Updated
         console.error("Error en la formulación:", err);
         this.formulationError = "Ocurrió un error inesperado durante la formulación. Intente de nuevo.";
         this.formulationResult = null;
-        this.clearChartData(); // Clear charts on error
         this.isLoading = false;
         this.cdRef.detectChanges();
       }
