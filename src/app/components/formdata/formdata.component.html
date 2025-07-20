@@ -33,6 +33,14 @@
         <mat-icon>delete_sweep</mat-icon>
         Limpiar
       </button>
+      <button mat-button (click)="showAdvanced = !showAdvanced">
+        <mat-icon>{{ showAdvanced ? 'expand_less' : 'expand_more' }}</mat-icon>
+        Opciones Avanzadas
+      </button>
+      <button mat-button (click)="showRestrictions = !showRestrictions">
+        <mat-icon>{{ showRestrictions ? 'expand_less' : 'expand_more' }}</mat-icon>
+        Restricciones
+      </button>
     </div>
 
     <div *ngIf="isLoading" class="loading-indicator">
@@ -40,60 +48,112 @@
       <span>Procesando, por favor espere...</span>
     </div>
 
-    <div *ngIf="formulationError" class="error-message mat-warn">
+    <div *ngIf="formulationError && !formulationResult" class="error-message mat-warn">
       <mat-icon>error_outline</mat-icon>
       <span>{{ formulationError }}</span>
     </div>
   </div>
 
   <div class="right-side-box">
-    <div class="summary-card">
-      <h3>Resumen de Selección</h3>
-      <table class="info-table">
-        <tr>
-          <td class="tags">Cantidad:</td>
-          <td class="tags-value">{{ peso || 0 }} Kg</td>
-        </tr>
-        <tr>
-          <td class="tags">Especie:</td>
-          <td class="tags-value">{{ selectedEspecie?.nombre || 'No seleccionada' }}</td>
-        </tr>
-        <tr>
-          <td class="tags">Etapa:</td>
-          <td class="tags-value">{{ selectedEtapa?.nombre_etapa || 'No seleccionada' }}</td>
-        </tr>
-      </table>
-      <div class="ingredients-section">
-        <h4>Ingredientes Seleccionados:</h4>
-        <mat-list class="small-list" *ngIf="selectedIngredientes.length > 0; else noIngredientes">
-          <mat-list-item *ngFor="let item of selectedIngredientes; trackBy: trackIngredient" class="small-item">
-            {{ item.Nombre_Ingrediente }} (Precio: {{ item.precio | number:'1.2-2' }})
-          </mat-list-item>
-        </mat-list>
-        <ng-template #noIngredientes>
-          <p>No hay ingredientes seleccionados.</p>
-        </ng-template>
-      </div>
-    </div>
+    <!-- This will now be part of results-and-charts-container -->
+    <div class="results-and-charts-container">
+      <div class="formulation-results">
+        <div class="summary-card">
+          <h3>Resumen de Selección</h3>
+          <table class="info-table">
+            <tr>
+              <td class="tags">Cantidad:</td>
+              <td class="tags-value">{{ peso || 0 }} Kg</td>
+            </tr>
+            <tr>
+              <td class="tags">Especie:</td>
+              <td class="tags-value">{{ selectedEspecie?.nombre || 'No seleccionada' }}</td>
+            </tr>
+            <tr>
+              <td class="tags">Etapa:</td>
+              <td class="tags-value">{{ selectedEtapa?.nombre_etapa || 'No seleccionada' }}</td>
+            </tr>
+          </table>
+          <div class="ingredients-section">
+            <h4>Ingredientes Seleccionados:</h4>
+            <mat-list class="small-list" *ngIf="selectedIngredientes.length > 0; else noIngredientes">
+              <mat-list-item *ngFor="let item of selectedIngredientes; trackBy: trackIngredient" class="small-item">
+                {{ item.Nombre_Ingrediente }} (Precio: {{ item.precio | number:'1.2-2' }})
+              </mat-list-item>
+            </mat-list>
+            <ng-template #noIngredientes>
+              <p>No hay ingredientes seleccionados.</p>
+            </ng-template>
+          </div>
+        </div>
 
-    <div *ngIf="formulationResult" class="results-card">
-      <h3>Resultados de la Formulación</h3>
-      <h4>Dieta Óptima:</h4>
-      <table mat-table [dataSource]="getSolutionAsArray(formulationResult.solution)" class="mat-elevation-z2 result-table">
-        <!-- Ingrediente Column -->
-        <ng-container matColumnDef="ingredient">
-          <th mat-header-cell *matHeaderCellDef> Ingrediente </th>
-          <td mat-cell *matCellDef="let element"> {{element.key}} </td>
-        </ng-container>
-        <!-- Cantidad Column -->
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef> Cantidad (Kg) </th>
-          <td mat-cell *matCellDef="let element"> {{element.value | number:'1.2-4'}} </td> <!-- Increased decimal places for precision -->
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="['ingredient', 'amount']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['ingredient', 'amount'];"></tr>
-      </table>
-      <h4>Costo Total: ${{ formulationResult.cost | number:'1.2-2' }}</h4>
+        <div *ngIf="formulationError && formulationResult" class="error-message mat-warn results-error">
+             <mat-icon>error_outline</mat-icon>
+             <span>Error en la formulación: {{ formulationError }}</span>
+        </div>
+
+        <div *ngIf="formulationResult" class="results-card">
+          <h3>Resultados de la Formulación</h3>
+          <table mat-table [dataSource]="getSolutionAsArray(formulationResult.solution)" class="mat-elevation-z2 result-table">
+            <ng-container matColumnDef="ingredient">
+              <th mat-header-cell *matHeaderCellDef> Ingrediente </th>
+              <td mat-cell *matCellDef="let element"> {{element.key}} </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Cantidad (Kg) </th>
+              <td mat-cell *matCellDef="let element"> {{element.value | number:'1.2-4'}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['ingredient', 'amount']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['ingredient', 'amount'];"></tr>
+          </table>
+          <h4>Costo Total: ${{ formulationResult.cost | number:'1.2-2' }}</h4>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-section" *ngIf="showAdvanced && formulationResult && !formulationError && pieChartDatasets && pieChartDatasets.datasets && pieChartDatasets.datasets.length > 0 && pieChartDatasets.datasets[0] && pieChartDatasets.datasets[0].data && pieChartDatasets.datasets[0].data.length > 0">
+        <h2>Datos Estadísticos y Gráficos</h2>
+
+        <div class="chart-container">
+          <canvas baseChart
+            [type]="pieChartType"
+            [data]="pieChartDatasets"
+            [options]="pieChartOptions"
+            [legend]="pieChartLegend">
+          </canvas>
+        </div>
+
+        <div class="chart-container">
+          <canvas baseChart
+            [type]="barChartType"
+            [data]="barChartDatasets"
+            [options]="barChartOptions"
+            [legend]="barChartLegend">
+          </canvas>
+        </div>
+      </div>
+      <!-- Restrictions Section -->
+      <div class="restrictions-section" *ngIf="showRestrictions">
+        <h2>Restricciones Nutricionales</h2>
+        <div *ngIf="selectedDieta">
+          <div *ngFor="let group of selectedDieta | keyvalue">
+            <h3>{{ group.key }}</h3>
+            <div *ngFor="let restriction of group.value" class="restriction-item">
+              <mat-form-field appearance="outline">
+                <mat-label>{{ restriction.name }} (min)</mat-label>
+                <input matInput type="number" [(ngModel)]="restriction.values.min" name="{{restriction.name}}_min">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>{{ restriction.name }} (max)</mat-label>
+                <input matInput type="number" [(ngModel)]="restriction.values.max" name="{{restriction.name}}_max">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!selectedDieta">
+          <p>Seleccione una etapa para ver las restricciones.</p>
+        </div>
+      </div>
     </div>
   </div>
 </form>

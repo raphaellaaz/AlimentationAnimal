@@ -26,6 +26,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { NgChartsModule } from 'ng2-charts';
+import { ChartType, ChartOptions, ChartData } from 'chart.js';
 
 import {
   IngredienteConPrecio,
@@ -57,6 +60,7 @@ import { DietaModel } from '../../models/dieta.model';
     MatListModule,
     CommonModule, // Add CommonModule here for *ngIf, *ngFor etc.
     MatProgressSpinnerModule, // Add MatProgressSpinnerModule
+    NgChartsModule,
   ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css',
@@ -77,6 +81,51 @@ export class FormdataComponent implements OnInit {
     null;
   formulationError: string | null = null;
   isLoading: boolean = false;
+  showAdvanced = false;
+  showRestrictions = false;
+  showRestrictions = false;
+
+  // Chart properties
+  // For Pie Chart (Ingredient Proportion)
+  public pieChartLabels: string[] = [];
+  public pieChartDatasets: ChartData<'pie', number[], string | string[]> = {
+    labels: this.pieChartLabels,
+    datasets: [{ data: [] }]
+  };
+  public pieChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Proporción de Ingredientes' }
+    }
+  };
+  public pieChartLegend = true;
+  public pieChartType: 'pie' = 'pie';
+
+  // For Bar Chart (Nutrient Analysis - Simulated)
+  public barChartLabels: string[] = ['Proteína', 'Grasa', 'Fibra', 'Calcio', 'Fósforo'];
+  public barChartDatasets: ChartData<'bar'> = {
+    labels: this.barChartLabels,
+    datasets: [
+      { data: [], label: 'Aportado en la Mezcla (g)' },
+      { data: [], label: 'Mínimo Requerido (g)' }
+      // { data: [], label: 'Máximo Requerido (g)' } // Optional
+    ]
+  };
+  public barChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      title: { display: true, text: 'Análisis Nutricional (Simulado)' }
+    },
+    scales: {
+      y: { beginAtZero: true }
+    }
+  };
+  public barChartLegend = true;
+  public barChartType: 'bar' = 'bar';
+
+  private subscriptions = new Subscription();
 
   // Initial empty states
   private initialEspecieState: EspecieModel = {
@@ -309,6 +358,7 @@ export class FormdataComponent implements OnInit {
               cost: number;
             };
             this.formulationError = null;
+            this.updateCharts();
           }
           this.isLoading = false;
           this.cdRef.detectChanges();
@@ -330,6 +380,7 @@ export class FormdataComponent implements OnInit {
     this.formulationResult = null;
     this.formulationError = null;
     this.isLoading = false;
+    this.clearChartData(); // Clear charts
 
     // Reset selectedEspecie and notify service
     this.selectedEspecie = { ...this.initialEspecieState };
@@ -365,5 +416,86 @@ export class FormdataComponent implements OnInit {
     item: IngredienteConPrecio
   ): number | string {
     return item.id || item.Nombre_Ingrediente; // Changed id_ingrediente to id
+  }
+
+  private updateCharts(): void {
+    if (!this.formulationResult || !this.formulationResult.solution) {
+      this.clearChartData();
+      return;
+    }
+
+    // Pie Chart Data
+    this.pieChartLabels = Object.keys(this.formulationResult.solution);
+    const pieData = Object.values(this.formulationResult.solution);
+    this.pieChartDatasets = {
+        labels: this.pieChartLabels,
+        datasets: [{ data: pieData }]
+    };
+
+
+    // Bar Chart Data (Simulated Nutrient Analysis)
+    // These are very rough placeholder calculations for simulation purposes
+    const simulatedProvidedNutrients = {
+      'Proteína': 0,
+      'Grasa': 0,
+      'Fibra': 0,
+      'Calcio': 0,
+      'Fósforo': 0
+    };
+
+    // Simulate nutrient contribution from each ingredient in the solution
+    for (const [ingredientName, amount] of Object.entries(this.formulationResult.solution)) {
+      // These percentages are completely arbitrary for simulation
+      simulatedProvidedNutrients['Proteína'] += amount * (Math.random() * 0.15 + 0.05); // 5-20% protein sim
+      simulatedProvidedNutrients['Grasa'] += amount * (Math.random() * 0.10 + 0.02);  // 2-12% fat sim
+      simulatedProvidedNutrients['Fibra'] += amount * (Math.random() * 0.08 + 0.02);  // 2-10% fiber sim
+      simulatedProvidedNutrients['Calcio'] += amount * (Math.random() * 0.01 + 0.001); // 0.1-1.1% calcium sim
+      simulatedProvidedNutrients['Fósforo'] += amount * (Math.random() * 0.008 + 0.001); // 0.1-0.9% phosphorus sim
+    }
+
+    const providedData = this.barChartLabels.map(label =>
+        +(simulatedProvidedNutrients[label as keyof typeof simulatedProvidedNutrients] * 1000).toFixed(2) // in grams
+    );
+
+    // Simulate minimum required nutrients (e.g., grams per target weight)
+    // These are placeholders and should ideally come from dynamic requirements
+    const scaledTargetWeightKg = this.peso; // Assuming this.peso is in kg
+    const requiredMinData = [
+      200 * (scaledTargetWeightKg / 100), // Protein g per 100kg, scaled
+      50  * (scaledTargetWeightKg / 100), // Fat g per 100kg, scaled
+      30  * (scaledTargetWeightKg / 100), // Fiber g per 100kg, scaled
+      8   * (scaledTargetWeightKg / 100), // Calcium g per 100kg, scaled
+      4   * (scaledTargetWeightKg / 100)  // Phosphorus g per 100kg, scaled
+    ].map(val => +val.toFixed(2));
+
+
+    this.barChartDatasets = {
+        labels: this.barChartLabels,
+        datasets: [
+          { data: providedData, label: 'Aportado en la Mezcla (g)' },
+          { data: requiredMinData, label: 'Mínimo Requerido (g)' }
+        ]
+    };
+
+    // Trigger change detection for charts as data objects might be updated
+    this.cdRef.detectChanges();
+  }
+
+  private clearChartData(): void {
+    this.pieChartLabels = [];
+    this.pieChartDatasets = { labels: [], datasets: [{ data: [] }] };
+
+    this.barChartDatasets = {
+        labels: this.barChartLabels, // Keep labels, clear data
+        datasets: [
+          { data: [], label: 'Aportado en la Mezcla (g)' },
+          { data: [], label: 'Mínimo Requerido (g)' }
+        ]
+    };
+     this.cdRef.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
