@@ -19,16 +19,17 @@ export interface IngredienteConPrecio extends IngredienteModel {
   
 
 interface Restricion{
-  min: number;
-  max: number;
-  keys?: string[];
+  name: string,
+  values: Record<string,number>;
 }
 
 
 export interface Restricciones{
-  PROTEINA: Restricion
-  ENERGIA: Restricion
-  FIBRA: Restricion
+  PROTEINA: Restricion[]
+  ENERGIA: Restricion[]
+  MINERALES: Restricion[]
+  AMINOACIDOS: Restricion[]
+  
 }
 
 

@@ -4,7 +4,7 @@ import { FormsModule, Validators } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { isEmpty, map, startWith } from 'rxjs/operators';
+import { isEmpty, map, max, startWith } from 'rxjs/operators';
 import { AsyncPipe, CommonModule } from '@angular/common'; // Import CommonModule
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
@@ -14,7 +14,6 @@ import { SearchInpComponent as SearchIngredienteComponent } from '../ingrediente
 import { SearchInpComponent as SearchEtapaComponent } from '../etapas/search-inp/search-inp.component'; // Renamed for clarity
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import MatProgressSpinnerModule
-
 
 import { EtapasService } from '../../services/etapas-service.service';
 import { EspeciesService } from '../../services/especies-service.service';
@@ -28,13 +27,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 
-import { IngredienteConPrecio, Restricciones } from '../../interfaces/ingrediente_interfaces';
+import {
+  IngredienteConPrecio,
+  Restricciones,
+} from '../../interfaces/ingrediente_interfaces';
 
 //import { optimizeFormulation } from '../../formulation/formulation';
 import { FormulationpyService } from '../../services/formulationpy.service';
 import { DietasService } from '../../services/dietas.service';
 import { DietaModel } from '../../models/dieta.model';
-
 
 @Component({
   selector: 'app-formdata',
@@ -55,14 +56,14 @@ import { DietaModel } from '../../models/dieta.model';
     MatTableModule,
     MatListModule,
     CommonModule, // Add CommonModule here for *ngIf, *ngFor etc.
-    MatProgressSpinnerModule // Add MatProgressSpinnerModule
+    MatProgressSpinnerModule, // Add MatProgressSpinnerModule
   ],
   templateUrl: './formdata.component.html',
   styleUrl: './formdata.component.css',
 })
 export class FormdataComponent implements OnInit {
-
-  @ViewChild(SearchEspecieComponent) searchEspecieComponent!: SearchEspecieComponent;
+  @ViewChild(SearchEspecieComponent)
+  searchEspecieComponent!: SearchEspecieComponent;
   // No ViewChild needed for SearchEtapaComponent if we clear through service
   // No ViewChild needed for SearchIngredienteComponent if we clear through service
 
@@ -72,14 +73,24 @@ export class FormdataComponent implements OnInit {
   selectedIngredientes: IngredienteConPrecio[] = [];
   selectedDieta!: Restricciones | null;
 
-  formulationResult: { solution: Record<string, number>, cost: number } | null = null;
+  formulationResult: { solution: Record<string, number>; cost: number } | null =
+    null;
   formulationError: string | null = null;
   isLoading: boolean = false;
 
   // Initial empty states
-  private initialEspecieState: EspecieModel = { id_especie: 0, nombre: '', tipo: '' };
-  private initialEtapaState: EtapaModel = { id_etapa: 0, id_especie: 0, nombre_etapa: '', edad_inicio: 0, edad_fin: 0 };
-
+  private initialEspecieState: EspecieModel = {
+    id_especie: 0,
+    nombre: '',
+    tipo: '',
+  };
+  private initialEtapaState: EtapaModel = {
+    id_etapa: 0,
+    id_especie: 0,
+    nombre_etapa: '',
+    edad_inicio: 0,
+    edad_fin: 0,
+  };
 
   constructor(
     private etapaService: EtapasService,
@@ -109,55 +120,150 @@ export class FormdataComponent implements OnInit {
   }
 
   setRestricciones() {
+    //por defecto // modificables
     this.dietaService.etapaSeleccionada$.subscribe({
       next: (dieta) => {
         if (!dieta) {
           this.selectedDieta = null;
           return;
         }
-        
-        this.selectedDieta = { //posteriormente para advance que pueda especificar valores netos
-          PROTEINA: {
-            min:  8,
-            max:  Number.MAX_SAFE_INTEGER,
-            keys: ["PB____"],
-          },
-          ENERGIA: {
-            min: 1500,
-            max: Number.MAX_SAFE_INTEGER,
-            keys: ["EM_RTES_Kcal_kg", "ENL_RTES_Kcal_kg"],
-          },
-          FIBRA: {
-            min:  0,
-            max:  15, //Number.MAX_SAFE_INTEGER,
-            keys: ["FB____", "FND____"],
-          }
-        };
-  
+
+        this.selectedDieta = {
+          //posteriormente para advance que pueda especificar valores netos
+          PROTEINA: [
+            {
+              name: 'humedad____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'cenizas____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'pb____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'ee____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'fb____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'fnd____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'fad____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'almidon____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'azucares____',
+              values: { min: 0.1, max: 12 },
+            },
+          ],
+          ENERGIA: [
+            {
+              name: 'em_rtes_kcal_kg',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'en_porc_kcal_kg',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'ema_aves_kcal_kg',
+              values: { min: 0.1, max: 12 },
+            },
+          ],
+          MINERALES: [
+            {
+              name: 'ca____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'p____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'na____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'cl____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'mg____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'k____',
+              values: { min: 0.1, max: 12 },
+            },
+          ],
+          AMINOACIDOS: [
+            {
+              name: 'lys____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'met____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'thr____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'trp____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'ile____',
+              values: { min: 0.1, max: 12 },
+            },
+            {
+              name: 'val____',
+              values: { min: 0.1, max: 12 },
+            },
+          ]
+        }
+
         console.log('Restricciones cargadas:', this.selectedDieta);
-  
+
         this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Error al recibir la dieta seleccionada:', err);
         this.selectedDieta = null;
-      }
+      },
     });
   }
-  
+
   setEspecie() {
     this.especieService.especieSeleccionada$.subscribe((especie) => {
-      this.selectedEspecie = especie ? especie : { ...this.initialEspecieState };
+      this.selectedEspecie = especie
+        ? especie
+        : { ...this.initialEspecieState };
       console.log('Especie recibido:', this.selectedEspecie);
       this.cdRef.detectChanges();
     });
   }
   setIngrediente() {
-    this.ingredienteService.ingredienteSeleccionado$.subscribe((ingredientes) => {
-      this.selectedIngredientes = ingredientes || [];
-      console.log('Ingredientes seleccionados:', this.selectedIngredientes);
-      this.cdRef.detectChanges();
-    });
+    this.ingredienteService.ingredienteSeleccionado$.subscribe(
+      (ingredientes) => {
+        this.selectedIngredientes = ingredientes || [];
+        console.log('Ingredientes seleccionados:', this.selectedIngredientes);
+        this.cdRef.detectChanges();
+      }
+    );
   }
 
   onIngredientesSelectionChange(ingredientes: IngredienteConPrecio[]) {
@@ -170,54 +276,52 @@ export class FormdataComponent implements OnInit {
     this.formulationError = null;
 
     if (this.peso <= 0) {
-      this.formulationError = "El peso a formular debe ser mayor que cero.";
+      this.formulationError = 'El peso a formular debe ser mayor que cero.';
       this.isLoading = false;
       return;
     }
     if (!this.selectedEspecie || this.selectedEspecie.id_especie === 0) {
-      this.formulationError = "Por favor, seleccione una especie.";
+      this.formulationError = 'Por favor, seleccione una especie.';
       this.isLoading = false;
       return;
     }
     if (!this.selectedEtapa || this.selectedEtapa.id_etapa === 0) {
-      this.formulationError = "Por favor, seleccione una etapa de desarrollo.";
+      this.formulationError = 'Por favor, seleccione una etapa de desarrollo.';
       this.isLoading = false;
       return;
     }
     if (this.selectedIngredientes.length === 0) {
-      this.formulationError = "Por favor, seleccione al menos un ingrediente.";
+      this.formulationError = 'Por favor, seleccione al menos un ingrediente.';
       this.isLoading = false;
       return;
     }
 
-    
-
-    this.formulation.createCalc(
-      this.selectedIngredientes,
-      this.peso,
-      this.selectedDieta,
-      
-      
-      ).subscribe({
-      next: (result) => {
-        if (result.hasOwnProperty('error')) {
-          this.formulationError = (result as { error: string }).error;
+    this.formulation
+      .createCalc(this.selectedIngredientes, this.peso, this.selectedDieta)
+      .subscribe({
+        next: (result) => {
+          if (result.hasOwnProperty('error')) {
+            this.formulationError = (result as { error: string }).error;
+            this.formulationResult = null;
+          } else {
+            this.formulationResult = result as {
+              solution: Record<string, number>;
+              cost: number;
+            };
+            this.formulationError = null;
+          }
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error en la formulación:', err);
+          this.formulationError =
+            'Ocurrió un error inesperado durante la formulación. Intente de nuevo.';
           this.formulationResult = null;
-        } else {
-          this.formulationResult = result as { solution: Record<string, number>, cost: number };
-          this.formulationError = null;
-        }
-        this.isLoading = false;
-        this.cdRef.detectChanges();
-      },
-      error: (err) => {
-        console.error("Error en la formulación:", err);
-        this.formulationError = "Ocurrió un error inesperado durante la formulación. Intente de nuevo.";
-        this.formulationResult = null;
-        this.isLoading = false;
-        this.cdRef.detectChanges();
-      }
-    });
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+        },
+      });
   }
 
   onLimpiar(): void {
@@ -233,7 +337,7 @@ export class FormdataComponent implements OnInit {
     if (this.searchEspecieComponent) {
       this.searchEspecieComponent.removeItem(); // Call child's clear method
     }
-    
+
     // Reset selectedEtapa and notify service
     this.selectedEtapa = { ...this.initialEtapaState };
     this.etapaService.setEtapaSeleccionada(null); // Notify service to clear
@@ -246,7 +350,9 @@ export class FormdataComponent implements OnInit {
   }
 
   // Helper method to convert solution object to an array for mat-table // Obtiene los resultados en un array para convertirlos en una tabla para mostrarlos
-  public getSolutionAsArray(solution: Record<string, number> | undefined | null): { key: string; value: number }[] {
+  public getSolutionAsArray(
+    solution: Record<string, number> | undefined | null
+  ): { key: string; value: number }[] {
     if (!solution) {
       return [];
     }
@@ -254,7 +360,10 @@ export class FormdataComponent implements OnInit {
   }
 
   // Optional: trackBy function for selectedIngredientes list for better performance
-  public trackIngredient(index: number, item: IngredienteConPrecio): number | string {
+  public trackIngredient(
+    index: number,
+    item: IngredienteConPrecio
+  ): number | string {
     return item.id || item.Nombre_Ingrediente; // Changed id_ingrediente to id
   }
 }
